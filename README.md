@@ -9,6 +9,14 @@ HTML + CSS + JS  →  [HyperFrame]  →  MP4 (H.264 / 1920×1080 / 30fps)
 
 ---
 
+## Demo
+
+**Este vídeo foi criado com o próprio HyperFrame** — código-fonte em [`Modelos/hyperframe-showcase.html`](./Modelos/hyperframe-showcase.html).
+
+https://github.com/OsmarZM/HyperFrame-Project/raw/main/demo/hyperframe-showcase.mp4
+
+---
+
 ## Como Funciona
 
 O HyperFrame não grava a tela em tempo real. Ele **controla o tempo virtualmente**:

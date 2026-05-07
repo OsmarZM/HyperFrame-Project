@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000;font-family:'JetBrains Mono','Consolas',monospace;color:#fff}
+
+#stage{position:absolute;inset:0}
+#bg-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,255,0.06) 1px,transparent 1px);
+  background-size:80px 80px;transform-origin:center center;opacity:0}
+#bg-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,#000 90%)}
+#bg-glow{position:absolute;width:1400px;height:1400px;border-radius:50%;left:50%;top:50%;
+  transform:translate(-50%,-50%);filter:blur(120px);opacity:0;pointer-events:none}
+#particles{position:absolute;inset:0}
+#code-rain{position:absolute;inset:0;opacity:0;mix-blend-mode:screen}
+#scanlines{position:absolute;inset:0;pointer-events:none;opacity:0.05;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 3px)}
+
+/* Acts */
+.act{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none}
+.act.on{opacity:1}
+
+/* ACT 1 — INTRO */
+#a1-logo{font-size:140px;font-weight:900;letter-spacing:-4px;line-height:1;text-align:center;
+  background:linear-gradient(180deg,#fff 0%,#7fffff 50%,#00d8ff 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:scale(0.8);opacity:0}
+#a1-logo .red{background:linear-gradient(180deg,#ff5577 0%,#ff0040 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#a1-bar{width:0;height:4px;background:linear-gradient(90deg,transparent,#00d8ff,#ff3366,transparent);
+  box-shadow:0 0 20px rgba(0,216,255,0.8);margin-top:16px}
+#a1-tag{font-size:24px;letter-spacing:8px;color:rgba(255,255,255,0.6);text-transform:uppercase;opacity:0;margin-top:20px}
+#a1-tag .r{color:#ff3366}
+
+/* ACT 2 — CAPABILITIES */
+#a2{flex-direction:row;gap:120px}
+.cube-wrap{width:480px;height:480px;perspective:1200px;flex-shrink:0}
+.cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(0deg)}
+.face{position:absolute;width:480px;height:480px;border:2px solid rgba(0,216,255,0.5);
+  background:rgba(0,216,255,0.04);display:flex;align-items:center;justify-content:center;
+  font-size:60px;font-weight:900;color:#00d8ff;
+  box-shadow:inset 0 0 60px rgba(0,216,255,0.2),0 0 40px rgba(0,216,255,0.3)}
+.face::before{content:'';position:absolute;top:12px;left:12px;width:24px;height:24px;border-top:2px solid #ff3366;border-left:2px solid #ff3366}
+.face::after{content:'';position:absolute;bottom:12px;right:12px;width:24px;height:24px;border-bottom:2px solid #ff3366;border-right:2px solid #ff3366}
+.face.f1{transform:translateZ(240px)}.face.f2{transform:rotateY(90deg) translateZ(240px)}
+.face.f3{transform:rotateY(180deg) translateZ(240px)}.face.f4{transform:rotateY(-90deg) translateZ(240px)}
+.face.f5{transform:rotateX(90deg) translateZ(240px)}.face.f6{transform:rotateX(-90deg) translateZ(240px)}
+
+#a2-info{display:flex;flex-direction:column;gap:16px;width:580px}
+#a2-label{font-size:13px;color:#ff3366;letter-spacing:6px;text-transform:uppercase;opacity:0}
+#a2-title{font-size:58px;font-weight:900;line-height:1.05;opacity:0}
+#a2-title .neon{color:#00d8ff;text-shadow:0 0 30px rgba(0,216,255,0.7)}
+.feat{display:flex;align-items:center;gap:18px;padding:14px 0;border-bottom:1px solid rgba(0,216,255,0.12);opacity:0;transform:translateX(-20px)}
+.feat .dot{width:10px;height:10px;background:#00d8ff;border-radius:50%;box-shadow:0 0 12px #00d8ff;flex-shrink:0}
+.feat .ftxt{font-size:20px;color:rgba(255,255,255,0.85);font-weight:500}
+.feat .fnum{margin-left:auto;font-size:16px;color:#ff3366;font-weight:700}
+
+/* ACT 3 — CODE → VIDEO */
+#a3{flex-direction:row;gap:64px;padding:100px 120px;align-items:stretch}
+.code-pane{flex:1;background:#0d1117;border:1.5px solid rgba(0,216,255,0.3);border-radius:18px;
+  padding:36px 32px;font-size:19px;line-height:1.7;position:relative;opacity:0;transform:translateX(-30px);
+  box-shadow:0 0 40px rgba(0,216,255,0.1)}
+.pane-head{position:absolute;top:-14px;left:24px;background:#0d1117;padding:0 12px;font-size:12px;color:#00d8ff;letter-spacing:3px;text-transform:uppercase}
+.pane-dots{position:absolute;top:14px;right:18px;display:flex;gap:6px}
+.pane-dots span{width:10px;height:10px;border-radius:50%}
+.pane-dots span:nth-child(1){background:#ff5f56}.pane-dots span:nth-child(2){background:#ffbd2e}.pane-dots span:nth-child(3){background:#27c93f}
+.cline{opacity:0}.kw{color:#ff79c6}.fn{color:#50fa7b}.str{color:#f1fa8c}.cm{color:#6272a4}.num{color:#bd93f9}.vr{color:#e2e8f0}
+
+#a3-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;flex-shrink:0}
+.pulse-ring{width:128px;height:128px;border-radius:50%;border:3px solid #ff3366;display:flex;align-items:center;justify-content:center;
+  font-size:56px;color:#ff3366;box-shadow:0 0 40px rgba(255,51,102,0.5)}
+.arrow-lbl{font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:5px;text-transform:uppercase}
+
+.video-pane{flex:1;background:#080808;border:1.5px solid rgba(255,51,102,0.4);border-radius:18px;
+  position:relative;opacity:0;transform:translateX(30px);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 40px rgba(255,51,102,0.1)}
+.video-pane .pane-head{background:#080808;color:#ff3366}
+.vplay{width:112px;height:112px;border-radius:50%;border:3px solid #ff3366;display:flex;align-items:center;justify-content:center;
+  font-size:44px;color:#ff3366;background:rgba(255,51,102,0.08);box-shadow:0 0 40px rgba(255,51,102,0.4)}
+.vid-bar{position:absolute;bottom:56px;left:24px;right:24px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px}
+.vid-fill{height:100%;width:0;background:linear-gradient(90deg,#ff3366,#ff0040);border-radius:2px;box-shadow:0 0 8px #ff3366}
+.vid-meta{position:absolute;bottom:22px;left:24px;right:24px;display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,0.45);letter-spacing:2px}
+.vid-meta b{color:#fff}
+
+/* ACT 4 — STATS */
+#a4{padding:100px 140px;justify-content:flex-start;gap:56px}
+#a4-head{font-size:52px;font-weight:900;text-align:center;opacity:0}
+#a4-head .neon{color:#00d8ff;text-shadow:0 0 30px rgba(0,216,255,0.7)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;width:100%}
+.stat{background:rgba(0,216,255,0.04);border:1.5px solid rgba(0,216,255,0.2);border-radius:18px;
+  padding:36px 24px;text-align:center;opacity:0;transform:translateY(30px);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff3366,transparent)}
+.stat .sv{font-size:80px;font-weight:900;line-height:1;
+  background:linear-gradient(180deg,#fff 0%,#00d8ff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .su{font-size:18px;color:#ff3366;font-weight:700;margin-top:8px;letter-spacing:3px;text-transform:uppercase}
+.stat .sl{font-size:13px;color:rgba(255,255,255,0.4);margin-top:12px;letter-spacing:2px;text-transform:uppercase}
+
+/* ACT 5 — FINAL */
+#a5{gap:28px}
+#a5-glow{position:absolute;width:1200px;height:1200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,216,255,0.25) 0%,transparent 60%);filter:blur(60px);opacity:0}
+#a5-logo{font-size:190px;font-weight:900;letter-spacing:-6px;line-height:1;text-align:center;
+  position:relative;z-index:2;opacity:0;transform:scale(0.7)}
+#a5-logo .a{background:linear-gradient(180deg,#fff 0%,#00d8ff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#a5-logo .b{background:linear-gradient(180deg,#ff5577 0%,#ff0040 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+#a5-sub{font-size:28px;color:rgba(255,255,255,0.65);letter-spacing:7px;text-transform:uppercase;opacity:0;z-index:2;position:relative}
+#a5-line{width:0;height:3px;background:linear-gradient(90deg,transparent,#00d8ff,#ff3366,transparent);z-index:2;position:relative;box-shadow:0 0 16px rgba(0,216,255,0.6)}
+#a5-url{font-size:20px;color:rgba(255,255,255,0.45);letter-spacing:4px;font-family:monospace;opacity:0;z-index:2;position:relative}
+#a5-url span{color:#00d8ff}
+
+/* HUD */
+#hud-top{position:absolute;top:28px;left:0;right:0;display:flex;justify-content:space-between;
+  padding:0 56px;font-size:12px;letter-spacing:4px;color:rgba(255,255,255,0.35);text-transform:uppercase;opacity:0}
+#hud-top .hl{display:flex;gap:28px;align-items:center}
+#hud-top .hl b{color:#00d8ff}
+#hud-top .hr{display:flex;gap:18px;align-items:center}
+.chip{padding:4px 12px;border:1px solid rgba(0,216,255,0.3);border-radius:4px;color:#00d8ff}
+.rec-tag{padding:4px 12px;background:rgba(255,51,102,0.12);border:1px solid #ff3366;border-radius:4px;color:#ff3366;display:flex;align-items:center;gap:8px}
+.rec-dot{width:8px;height:8px;border-radius:50%;background:#ff3366;box-shadow:0 0 8px #ff3366}
+#hud-bot{position:absolute;bottom:0;left:0;right:0;height:5px;background:rgba(255,255,255,0.05)}
+#hud-fill{height:100%;width:0;background:linear-gradient(90deg,#00d8ff,#ff3366);box-shadow:0 0 16px rgba(0,216,255,0.5)}
+#fcount{position:absolute;bottom:18px;right:28px;font-size:12px;color:rgba(0,216,255,0.35);font-family:monospace;letter-spacing:2px;opacity:0}
+#glitch{position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:linear-gradient(180deg,transparent 48%,rgba(255,51,102,0.35) 50%,transparent 52%)}
+</style>
+<script>
+window.hyperframe = { fps: 30, durationInFrames: 540, width: 1920, height: 1080 };
+window.hyperframeReady = Promise.resolve();
+
+/* ─── easing ─── */
+const ease  = t => 1 - Math.pow(1-t, 3);
+const easeIn= t => t*t*t;
+const easeIO= t => t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+const elast = t => { if(!t||t===1)return t; const c=(2*Math.PI)/3; return Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c)+1; };
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+const inv   = (t,a,b) => clamp((t-a)/(b-a),0,1);
+const $     = id => document.getElementById(id);
+
+/* ─── particles ─── */
+let pctx, ptx=[], _inited=false;
+function initAll(){
+  if(_inited) return; _inited=true;
+  const c=$('particles'); c.width=1920; c.height=1080; pctx=c.getContext('2d');
+  for(let i=0;i<60;i++) ptx.push({x:Math.random()*1920,y:Math.random()*1080,
+    vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.2,r:Math.random()*1.5+.3,
+    z:Math.random()*1000+200,h:Math.random()<.65?190:340});
+  const rc=$('code-rain'); rc.width=1920; rc.height=1080;
+  window._rctx=rc.getContext('2d');
+  const chars='01ハイパーフレーム<>{}[]=/*&%';
+  window._rcols=[];
+  for(let x=0;x<1920;x+=24) window._rcols.push({x,y:-Math.random()*1080,s:2+Math.random()*4,chars});
+}
+function drawPart(t){
+  if(!pctx)return; pctx.clearRect(0,0,1920,1080);
+  for(const p of ptx){
+    p.x+=p.vx+Math.sin(t*.3+p.z*.001)*.25; p.y+=p.vy+Math.cos(t*.2+p.z*.001)*.18;
+    if(p.x<0)p.x+=1920; if(p.x>1920)p.x-=1920; if(p.y<0)p.y+=1080; if(p.y>1080)p.y-=1080;
+    const a=.25+Math.sin(t*1.4+p.z*.01)*.25;
+    pctx.fillStyle=`hsla(${p.h},100%,68%,${a})`; pctx.beginPath(); pctx.arc(p.x,p.y,p.r,0,Math.PI*2); pctx.fill();
+  }
+  pctx.lineWidth=1;
+  for(let i=0;i<ptx.length;i+=2) for(let j=i+1;j<ptx.length;j+=2){
+    const a=ptx[i],b=ptx[j],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
+    if(d2<16000){pctx.globalAlpha=(1-d2/16000)*.08;pctx.strokeStyle='#00d8ff';pctx.beginPath();pctx.moveTo(a.x,a.y);pctx.lineTo(b.x,b.y);pctx.stroke();}
+  }
+  pctx.globalAlpha=1;
+}
+function drawRain(t,op){
+  const rc=window._rctx, cols=window._rcols; if(!rc)return;
+  rc.fillStyle='rgba(0,0,0,.17)'; rc.fillRect(0,0,1920,1080);
+  rc.font='17px monospace';
+  for(const c of cols){
+    rc.fillStyle=`rgba(0,216,255,${op*.7})`; rc.fillText(c.chars[Math.floor((t*5+c.x)*.7)%c.chars.length],c.x,c.y);
+    rc.fillStyle=`rgba(255,255,255,${op*.6})`; rc.fillText(c.chars[Math.floor(t*5+c.x*.3)%c.chars.length],c.x,c.y);
+    c.y+=c.s; if(c.y>1080)c.y=-Math.random()*200;
+  }
+}
+
+let _act=-1;
+function showAct(i){if(i===_act)return;_act=i;document.querySelectorAll('.act').forEach((a,j)=>a.classList.toggle('on',j===i));}
+
+window.setFrame = function(n){
+  initAll();
+  const t=n/30, total=18;
+  $('hud-fill').style.width=(t/total*100)+'%';
+  const hudShow = t>.4&&t<17.4 ? ease(inv(t,.4,1.2))*(1-ease(inv(t,16.5,17.4))) : 0;
+  $('hud-top').style.opacity=hudShow;
+  $('fcount').style.opacity=hudShow>.1?.8:0;
+  if(hudShow>.1) $('fcount').textContent=`FRAME ${String(n).padStart(5,'0')} / 00540  ·  ${t.toFixed(2)}s`;
+
+  if(t>.5) drawPart(t);
+  $('bg-grid').style.transform=`rotate(${t*1.5}deg) scale(1.4)`;
+  $('bg-grid').style.opacity=clamp(inv(t,.5,2),0,.65)*(1-ease(inv(t,16.5,17.5)));
+  const glowHue=(t*28)%360;
+  $('bg-glow').style.background=`radial-gradient(circle,hsla(${glowHue<180?190:340},100%,55%,.2) 0%,transparent 60%)`;
+  $('bg-glow').style.opacity=clamp(inv(t,1,2.5),0,1)*(1-ease(inv(t,16.5,17.5)));
+
+  const rainOp=inv(t,7,7.7)*(1-inv(t,11.4,12.1));
+  $('code-rain').style.opacity=rainOp*.5; if(rainOp>.02)drawRain(t,rainOp);
+
+  $('glitch').style.opacity=0;
+  if(t>3.9&&t<4.06)$('glitch').style.opacity=.8;
+  if(t>6.9&&t<7.06)$('glitch').style.opacity=.6;
+  if(t>11.6&&t<11.76)$('glitch').style.opacity=.7;
+  if(t>13.9&&t<14.06)$('glitch').style.opacity=.5;
+
+  /* ── ACT 1: 0–4s ── */
+  if(t<4){
+    showAct(0);
+    const lt=elast(clamp(inv(t,.2,2),0,1));
+    $('a1-logo').style.opacity=inv(t,.2,1.3);
+    $('a1-logo').style.transform=`scale(${.8+lt*.2})`;
+    $('a1-bar').style.width=(inv(t,1.6,2.7)*760)+'px';
+    $('a1-tag').style.opacity=ease(inv(t,2.4,3.3));
+    if(t>3.3){const ot=inv(t,3.3,4);$('a1-logo').style.opacity=1-ot;$('a1-bar').style.opacity=1-ot;$('a1-tag').style.opacity=1-ot;}
+  }
+
+  /* ── ACT 2: 4–8s ── */
+  else if(t<8){
+    showAct(1);
+    document.querySelector('.cube').style.transform=`rotateX(${-20+Math.sin((t-4)*.6)*8}deg) rotateY(${-90+(t-4)*100}deg)`;
+    $('a2-label').style.opacity=ease(inv(t,4.2,5));
+    $('a2-title').style.opacity=ease(inv(t,4.4,5.2));
+    document.querySelectorAll('.feat').forEach((f,i)=>{
+      const ft=inv(t,5+i*.25,5.7+i*.25);
+      f.style.opacity=ease(ft); f.style.transform=`translateX(${(1-ease(ft))*-20}px)`;
+    });
+    if(t>7.3) document.getElementById('a2').style.opacity=1-inv(t,7.3,8);
+    else document.getElementById('a2').style.opacity=1;
+  }
+
+  /* ── ACT 3: 8–12s ── */
+  else if(t<12){
+    showAct(2);
+    const cp=$('a3-code'),vp=$('a3-video'),ar=$('a3-arrow');
+    cp.style.opacity=ease(inv(t,8.1,8.9)); cp.style.transform=`translateX(${(1-ease(inv(t,8.1,8.9)))*-30}px)`;
+    const lines=cp.querySelectorAll('.cline'), total2=lines.length;
+    const typed=clamp(Math.floor(inv(t,8.7,10.7)*total2),0,total2);
+    lines.forEach((l,i)=>l.style.opacity=i<typed?1:i===typed?.4:0);
+    ar.style.opacity=ease(inv(t,10,10.9));
+    ar.querySelector('.pulse-ring').style.transform=`scale(${1+Math.sin((t-10)*8)*.07})`;
+    vp.style.opacity=ease(inv(t,10.4,11.2)); vp.style.transform=`translateX(${(1-ease(inv(t,10.4,11.2)))*30}px)`;
+    vp.querySelector('.vid-fill').style.width=(clamp(inv(t,10.9,11.9),0,1)*100)+'%';
+    if(t>11.3) document.getElementById('a3').style.opacity=1-inv(t,11.3,12)*0.8;
+  }
+
+  /* ── ACT 4: 12–15.5s ── */
+  else if(t<15.5){
+    showAct(3);
+    $('a4-head').style.opacity=ease(inv(t,12,12.7));
+    document.querySelectorAll('.stat').forEach((s,i)=>{
+      const st=inv(t,12.3+i*.25,13.1+i*.25);
+      s.style.opacity=ease(st); s.style.transform=`translateY(${(1-ease(st))*30}px)`;
+      const sv=s.querySelector('.sv'),tgt=parseFloat(sv.dataset.target),suf=sv.dataset.suffix||'';
+      const isInt=sv.dataset.int==='1', cur=easeIO(clamp(inv(t,13+i*.18,14+i*.18),0,1));
+      sv.textContent=(isInt?Math.round(tgt*cur):(tgt*cur).toFixed(1))+suf;
+    });
+    if(t>14.8) document.getElementById('a4').style.opacity=1-inv(t,14.8,15.5);
+  }
+
+  /* ── ACT 5: 15.5–18s ── */
+  else{
+    showAct(4);
+    const lt=elast(clamp(inv(t,15.6,17.2),0,1));
+    $('a5-glow').style.opacity=ease(inv(t,15.6,16.6));
+    $('a5-logo').style.opacity=inv(t,15.7,16.6);
+    $('a5-logo').style.transform=`scale(${.7+lt*.3})`;
+    $('a5-sub').style.opacity=ease(inv(t,16.5,17.2));
+    $('a5-line').style.width=(ease(inv(t,16.8,17.5))*660)+'px';
+    $('a5-url').style.opacity=ease(inv(t,17.1,17.7));
+    if(t>17.5) document.body.style.opacity=1-easeIn(inv(t,17.5,18));
+  }
+};
+</script>
+</head>
+<body>
+
+<div id="stage">
+  <div id="bg-grid"></div>
+  <canvas id="particles"></canvas>
+  <canvas id="code-rain"></canvas>
+  <div id="bg-glow"></div>
+  <div id="bg-vignette"></div>
+</div>
+
+<div id="hud-top">
+  <div class="hl"><span><b>HYPERFRAME</b> · v0.1.0</span><span>1920 × 1080 · 30fps</span><span>H.264 / CRF 18</span></div>
+  <div class="hr"><span class="chip">CHROMIUM HEADLESS</span><span class="chip">FFMPEG</span><span class="rec-tag"><span class="rec-dot"></span>RENDERING</span></div>
+</div>
+
+<!-- ACT 1 -->
+<div class="act on" id="a1">
+  <div id="a1-logo">HYPER<span class="red">FRAME</span></div>
+  <div id="a1-bar"></div>
+  <div id="a1-tag">HTML <span class="r">→</span> CSS <span class="r">→</span> JS <span class="r">→</span> MP4</div>
+</div>
+
+<!-- ACT 2 -->
+<div class="act" id="a2">
+  <div class="cube-wrap">
+    <div class="cube">
+      <div class="face f1">HTML</div><div class="face f2">CSS</div>
+      <div class="face f3">JS</div><div class="face f4">PNG</div>
+      <div class="face f5">MP4</div><div class="face f6">∞</div>
+    </div>
+  </div>
+  <div id="a2-info">
+    <div id="a2-label">// CAPABILITIES</div>
+    <div id="a2-title">Renderize <span class="neon">qualquer cena web</span><br>em vídeo de alta fidelidade.</div>
+    <div class="feat"><span class="dot"></span><span class="ftxt">CSS · Canvas · SVG · WebGL — tudo funciona</span><span class="fnum">01</span></div>
+    <div class="feat"><span class="dot"></span><span class="ftxt">Tempo virtual — zero ghosting, zero dropped frames</span><span class="fnum">02</span></div>
+    <div class="feat"><span class="dot"></span><span class="ftxt">Renderização paralela via worker_threads</span><span class="fnum">03</span></div>
+    <div class="feat"><span class="dot"></span><span class="ftxt">Áudio multi-track com offsets independentes</span><span class="fnum">04</span></div>
+    <div class="feat"><span class="dot"></span><span class="ftxt">CLI · API REST · Web UI · Embeddable npm</span><span class="fnum">05</span></div>
+  </div>
+</div>
+
+<!-- ACT 3 -->
+<div class="act" id="a3">
+  <div class="code-pane" id="a3-code">
+    <div class="pane-head">scene.html</div>
+    <div class="pane-dots"><span></span><span></span><span></span></div>
+    <div class="cline"><span class="kw">window</span>.hyperframe = {</div>
+    <div class="cline">&nbsp;&nbsp;fps: <span class="num">30</span>,</div>
+    <div class="cline">&nbsp;&nbsp;durationInFrames: <span class="num">540</span>,</div>
+    <div class="cline">&nbsp;&nbsp;width: <span class="num">1920</span>, height: <span class="num">1080</span></div>
+    <div class="cline">};</div>
+    <div class="cline">&nbsp;</div>
+    <div class="cline"><span class="cm">// Pre-load assets</span></div>
+    <div class="cline"><span class="kw">window</span>.hyperframeReady = <span class="kw">new</span> <span class="fn">Promise</span>(res => {</div>
+    <div class="cline">&nbsp;&nbsp;loadImages().then(res);</div>
+    <div class="cline">});</div>
+    <div class="cline">&nbsp;</div>
+    <div class="cline"><span class="cm">// Called for every frame</span></div>
+    <div class="cline"><span class="kw">window</span>.<span class="fn">setFrame</span> = <span class="kw">function</span>(<span class="vr">n</span>) {</div>
+    <div class="cline">&nbsp;&nbsp;<span class="kw">const</span> t = n / <span class="num">30</span>; <span class="cm">// seconds</span></div>
+    <div class="cline">&nbsp;&nbsp;<span class="vr">el</span>.style.left = (t * <span class="num">200</span>) + <span class="str">'px'</span>;</div>
+    <div class="cline">};</div>
+  </div>
+  <div id="a3-arrow">
+    <div class="pulse-ring">→</div>
+    <div class="arrow-lbl">RENDER</div>
+  </div>
+  <div class="video-pane" id="a3-video">
+    <div class="pane-head">output.mp4</div>
+    <div class="vplay">▶</div>
+    <div class="vid-bar"><div class="vid-fill"></div></div>
+    <div class="vid-meta"><span><b>00:18</b> / 00:18</span><span><b>1920×1080</b> · 30fps · H.264</span></div>
+  </div>
+</div>
+
+<!-- ACT 4 -->
+<div class="act" id="a4">
+  <div id="a4-head">Performance que <span class="neon">escala</span></div>
+  <div class="stats-grid">
+    <div class="stat"><div class="sv" data-target="540" data-int="1">0</div><div class="su">FRAMES</div><div class="sl">renderizados deterministically</div></div>
+    <div class="stat"><div class="sv" data-target="1080" data-suffix="p" data-int="1">0</div><div class="su">FULL HD</div><div class="sl">até 4K com pixelRatio 2</div></div>
+    <div class="stat"><div class="sv" data-target="6" data-suffix="×" data-int="1">0</div><div class="su">WORKERS</div><div class="sl">paralelos (worker_threads)</div></div>
+    <div class="stat"><div class="sv" data-target="18" data-suffix=" CRF" data-int="1">0</div><div class="su">QUALIDADE</div><div class="sl">H.264 / yuv420p / faststart</div></div>
+  </div>
+</div>
+
+<!-- ACT 5 -->
+<div class="act" id="a5">
+  <div id="a5-glow"></div>
+  <div id="a5-logo"><span class="a">HYPER</span><span class="b">FRAME</span></div>
+  <div id="a5-sub">Web → Vídeo · Frame por Frame</div>
+  <div id="a5-line"></div>
+  <div id="a5-url"><span>github.com/</span>OsmarZM<span>/HyperFrame-Project</span></div>
+</div>
+
+<div id="glitch"></div>
+<div id="scanlines"></div>
+<div id="fcount"></div>
+<div id="hud-bot"><div id="hud-fill"></div></div>
+</body>
+</html>

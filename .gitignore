@@ -7,3 +7,7 @@ output/
 *.png
 server.log
 server-err.log
+
+# Exceptions: committed demo assets
+!demo/*.mp4
+

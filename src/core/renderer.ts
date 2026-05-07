@@ -25,8 +25,8 @@ export async function renderFrames(options: RendererOptions): Promise<void> {
   fs.mkdirSync(framesDir, { recursive: true });
 
   const browser = await launchBrowser(config);
-  // Per-frame timeout: if setFrame or screenshot hangs, abort after 15 s
-  const FRAME_TIMEOUT_MS = 15_000;
+  // Per-frame timeout: if setFrame or screenshot hangs, abort after 60 s
+  const FRAME_TIMEOUT_MS = 60_000;
 
   try {
     const page = await openPage(browser, config);
