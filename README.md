@@ -13,7 +13,9 @@ HTML + CSS + JS  →  [HyperFrame]  →  MP4 (H.264 / 1920×1080 / 30fps)
 
 **Este vídeo foi criado com o próprio HyperFrame** — código-fonte em [`Modelos/hyperframe-showcase.html`](./Modelos/hyperframe-showcase.html).
 
-https://github.com/OsmarZM/HyperFrame-Project/raw/main/demo/hyperframe-showcase.mp4
+![HyperFrame Showcase](demo/hyperframe-showcase.gif)
+
+> 18 segundos · 540 frames · 1920×1080 · H.264 — renderizado frame a frame pelo HyperFrame
 
 ---
 
