@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperFrame — Web to MP4</title>
+  <style>
+    :root {
+      --bg:      #080812;
+      --surf:    #10101e;
+      --surf2:   #15152a;
+      --border:  #1f1f38;
+      --bh:      #3a3a60;
+      --accent:  #7c6af7;
+      --adim:    rgba(124,106,247,.14);
+      --alit:    #a394fb;
+      --text:    #e0e0f0;
+      --muted:   #6060a0;
+      --dim:     #30305a;
+      --green:   #34d399;
+      --red:     #f87171;
+      --blue:    #60a5fa;
+      --r:       12px;
+      --rs:      8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; padding-bottom: 60px; line-height: 1.4;
+    }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    header {
+      padding: 18px 40px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+      background: linear-gradient(180deg, #0c0c20 0%, var(--bg) 100%);
+    }
+    .logo {
+      width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .brand h1 {
+      font-size: 18px; font-weight: 700; letter-spacing: -.02em;
+      background: linear-gradient(90deg, var(--alit), #c4b5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .brand p { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+    /* ── Layout ──────────────────────────────────────────────── */
+    .wrap { max-width: 1080px; margin: 36px auto; padding: 0 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      header { padding: 14px 16px; }
+      .wrap  { padding: 0 14px; margin-top: 20px; }
+    }
+
+    /* ── Card ────────────────────────────────────────────────── */
+    .card {
+      background: var(--surf); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px;
+    }
+    .card-lbl {
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+    }
+
+    /* ── Drop zone ───────────────────────────────────────────── */
+    .dz {
+      border: 2px dashed var(--bh); border-radius: var(--rs);
+      padding: 28px 20px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s; position: relative;
+    }
+    .dz:hover, .dz.over { border-color: var(--accent); background: var(--adim); }
+    .dz input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+      width: 100%; height: 100%;
+    }
+    .dz-icon { font-size: 32px; display: block; margin-bottom: 10px; }
+    .dz-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .dz-hint  { font-size: 12px; color: var(--muted); }
+    .dz-file  {
+      margin-top: 10px; padding: 7px 12px; background: var(--surf2);
+      border-radius: 6px; font-size: 12px; color: var(--alit);
+      display: none; align-items: center; gap: 6px; text-align: left; word-break: break-all;
+    }
+    .dz-file.show { display: flex; }
+
+    /* ── Divider ─────────────────────────────────────────────── */
+    .or {
+      display: flex; align-items: center; gap: 10px;
+      margin: 14px 0; color: var(--dim); font-size: 11px;
+    }
+    .or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── Fields ──────────────────────────────────────────────── */
+    .field { margin-bottom: 13px; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block; font-size: 11px; font-weight: 600; color: var(--muted);
+      margin-bottom: 5px; letter-spacing: .04em; text-transform: uppercase;
+    }
+    input[type=text], input[type=number], input[type=url], input[type=file] {
+      width: 100%; background: var(--surf2); border: 1px solid var(--border);
+      border-radius: var(--rs); color: var(--text); font-size: 14px;
+      padding: 9px 12px; outline: none; transition: border-color .2s; font-family: inherit;
+    }
+    input[type=text]:focus,
+    input[type=number]:focus,
+    input[type=url]:focus    { border-color: var(--accent); }
+    input[type=file]         { padding: 6px 10px; cursor: pointer; }
+
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .info-box {
+      background: var(--surf2); border-radius: 8px; padding: 10px 12px;
+      font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 6px;
+    }
+    .info-box code { color: var(--alit); }
+
+    /* ── Render button ───────────────────────────────────────── */
+    .btn-render {
+      width: 100%; padding: 14px; margin-top: 20px;
+      background: linear-gradient(135deg, var(--accent), #5a4fe0);
+      border: none; border-radius: var(--r); color: #fff;
+      font-size: 16px; font-weight: 700; letter-spacing: .02em;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 10px; transition: all .2s;
+    }
+    .btn-render:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(124,106,247,.35);
+    }
+    .btn-render:active:not(:disabled) { transform: none; }
+    .btn-render:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ── Error ───────────────────────────────────────────────── */
+    .err {
+      background: #1e0a0a; border: 1px solid #4a1a1a; border-radius: 8px;
+      padding: 12px 16px; font-size: 13px; color: var(--red);
+      margin-top: 12px; display: none;
+    }
+    .err.show { display: block; }
+
+    /* ── Progress ────────────────────────────────────────────── */
+    #prog-sec { display: none; margin-top: 20px; }
+    #prog-sec.show { display: block; }
+
+    .job-row {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 12px;
+    }
+    .job-id { font-family: monospace; font-size: 12px; color: var(--muted); }
+
+    .badge {
+      font-size: 10px; font-weight: 700; padding: 3px 9px;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: .06em;
+    }
+    .badge.queued    { background: #1a1a30; color: var(--muted); }
+    .badge.rendering { background: #101a35; color: var(--blue); animation: pulse 1.8s infinite; }
+    .badge.done      { background: #0a1e14; color: var(--green); }
+    .badge.failed    { background: #1e0a0a; color: var(--red); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
+
+    .pbar      { background: var(--surf2); border-radius: 6px; height: 8px; overflow: hidden; margin-bottom: 8px; }
+    .pbar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--alit)); border-radius: 6px; transition: width .6s ease; width: 0; }
+    .prog-lbl  { font-size: 13px; color: var(--muted); }
+
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 14px; padding: 10px 18px;
+      background: var(--green); color: #03140d;
+      font-size: 14px; font-weight: 700; border-radius: 8px;
+      text-decoration: none; transition: all .2s;
+    }
+    .dl-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    /* ── History ─────────────────────────────────────────────── */
+    .sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+
+    .btn-sm {
+      background: none; border: 1px solid var(--border); border-radius: 6px;
+      color: var(--muted); padding: 4px 10px; font-size: 12px; cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-sm:hover { border-color: var(--accent); color: var(--alit); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      text-align: left; padding: 7px 10px; font-size: 10px; font-weight: 600;
+      color: var(--dim); text-transform: uppercase; letter-spacing: .06em;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    tr:last-child td  { border-bottom: none; }
+    tr:hover td       { background: var(--surf2); }
+
+    .mono { font-family: monospace; font-size: 12px; color: var(--muted); }
+
+    .abt {
+      padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 700;
+      cursor: pointer; border: none; display: inline-flex; align-items: center;
+      gap: 4px; transition: filter .15s; text-decoration: none;
+    }
+    .abt:hover { filter: brightness(1.2); }
+    .abt.dl  { background: #0a1e14; color: var(--green); }
+    .abt.del { background: #1e0a0a; color: var(--red); }
+
+    .empty { text-align: center; padding: 28px; color: var(--dim); font-size: 13px; }
+    .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎬</div>
+  <div class="brand">
+    <h1>HyperFrame</h1>
+    <p>Web to MP4 Renderer</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="grid">
+
+    <!-- ── Entrada ───────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-lbl">Entrada da Cena</div>
+
+      <div class="dz" id="dz">
+        <input type="file" id="scene-inp" accept=".html,.zip">
+        <span class="dz-icon">📁</span>
+        <div class="dz-title">Arraste aqui ou clique para selecionar</div>
+        <div class="dz-hint">
+          Aceita <strong>.html</strong> (arquivo único) ou
+          <strong>.zip</strong> (cena com assets, fontes, etc.)
+        </div>
+        <div class="dz-file" id="dz-file">
+          <span>📄</span><span id="dz-fname"></span>
+        </div>
+      </div>
+
+      <div class="or">ou cole uma URL</div>
+
+      <div class="field">
+        <label for="url-inp">URL da cena</label>
+        <input type="url" id="url-inp" placeholder="https://minha-cena.com">
+      </div>
+
+      <div class="field" style="margin-top:16px">
+        <label for="audio-inp">Áudio (opcional)</label>
+        <input type="file" id="audio-inp" accept=".mp3,.wav,.aac,.ogg,.m4a">
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">
+          Será mixado pelo FFmpeg — não é reproduzido no browser
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Configurações ─────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-lbl">Configurações de Render</div>
+
+      <div class="g2">
+        <div class="field">
+          <label for="r-fps">FPS</label>
+          <input type="number" id="r-fps" value="30" min="1" max="120">
+        </div>
+        <div class="field">
+          <label for="r-dur">Duração (segundos)</label>
+          <input type="number" id="r-dur" value="5" min="0.1" step="0.5">
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="field">
+          <label for="r-w">Largura (px)</label>
+          <input type="number" id="r-w" value="1920" min="1">
+        </div>
+        <div class="field">
+          <label for="r-h">Altura (px)</label>
+          <input type="number" id="r-h" value="1080" min="1">
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="field">
+          <label for="r-px">Pixel Ratio</label>
+          <input type="number" id="r-px" value="1" min="0.5" max="4" step="0.5">
+        </div>
+        <div class="field">
+          <label for="r-wk">Workers (paralelo)</label>
+          <input type="number" id="r-wk" value="4" min="1" max="32">
+        </div>
+      </div>
+
+      <div class="info-box">
+        💡 Se o HTML expõe <code>window.hyperframe</code>, FPS / duração / tamanho
+        são detectados automaticamente — os campos acima <em>sobrescrevem</em>.
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <button class="btn-render" id="render-btn">▶&nbsp;&nbsp;Renderizar para MP4</button>
+  <div class="err" id="err"></div>
+
+  <!-- ── Progresso ─────────────────────────────────────────────── -->
+  <div id="prog-sec">
+    <div class="card" style="margin-top:20px">
+      <div class="job-row">
+        <span class="job-id" id="jid">—</span>
+        <span class="badge queued" id="jbadge">na fila</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pfill"></div></div>
+      <div class="prog-lbl" id="plabel">Aguardando…</div>
+      <div id="dl-area" style="display:none">
+        <a class="dl-btn" id="dl-link" href="#">⬇ Baixar MP4</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Histórico ─────────────────────────────────────────────── -->
+  <div class="card" style="margin-top:20px">
+    <div class="sec-hdr">
+      <div class="card-lbl" style="margin-bottom:0">Jobs Recentes</div>
+      <button class="btn-sm" id="ref-btn">↻ Atualizar</button>
+    </div>
+    <div id="jobs-tbl"><div class="empty">Nenhum job ainda.</div></div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+// ── State ────────────────────────────────────────────────────────────────────
+let sceneFile = null, audioFile = null;
+let pollTimer = null, curJobId = null;
+
+// ── DOM ──────────────────────────────────────────────────────────────────────
+const dz        = document.getElementById('dz');
+const sceneInp  = document.getElementById('scene-inp');
+const audioInp  = document.getElementById('audio-inp');
+const urlInp    = document.getElementById('url-inp');
+const dzFile    = document.getElementById('dz-file');
+const dzFname   = document.getElementById('dz-fname');
+const renderBtn = document.getElementById('render-btn');
+const errEl     = document.getElementById('err');
+const progSec   = document.getElementById('prog-sec');
+const jid       = document.getElementById('jid');
+const jbadge    = document.getElementById('jbadge');
+const pfill     = document.getElementById('pfill');
+const plabel    = document.getElementById('plabel');
+const dlArea    = document.getElementById('dl-area');
+const dlLink    = document.getElementById('dl-link');
+const jobsTbl   = document.getElementById('jobs-tbl');
+const refBtn    = document.getElementById('ref-btn');
+
+// ── Drag & drop ──────────────────────────────────────────────────────────────
+dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', ()  => dz.classList.remove('over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('over');
+  const f = e.dataTransfer?.files[0];
+  if (f) setScene(f);
+});
+sceneInp.addEventListener('change', () => sceneInp.files[0] && setScene(sceneInp.files[0]));
+audioInp.addEventListener('change', () => { audioFile = audioInp.files[0] || null; });
+
+function setScene(f) {
+  sceneFile = f;
+  dzFname.textContent = f.name + ' (' + fmtBytes(f.size) + ')';
+  dzFile.classList.add('show');
+  urlInp.value = '';
+}
+
+function fmtBytes(b) {
+  if (b < 1024)    return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(1) + ' MB';
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+renderBtn.addEventListener('click', async () => {
+  const url = urlInp.value.trim();
+  if (!sceneFile && !url) {
+    showErr('Selecione um arquivo (.html ou .zip) ou informe uma URL.');
+    return;
+  }
+  hideErr();
+  setLoading(true);
+
+  try {
+    const cfg = buildConfig();
+    const id  = sceneFile
+      ? await postFile(sceneFile, audioFile, cfg)
+      : await postUrl(url, cfg);
+
+    curJobId = id;
+    startPoll(id);
+    loadHist();
+  } catch (e) {
+    showErr(e.message);
+    setLoading(false);
+  }
+});
+
+function buildConfig() {
+  const fps = Number(document.getElementById('r-fps').value) || 30;
+  const dur = Number(document.getElementById('r-dur').value);
+  const w   = Number(document.getElementById('r-w').value)   || 1920;
+  const h   = Number(document.getElementById('r-h').value)   || 1080;
+  const px  = Number(document.getElementById('r-px').value)  || 1;
+  const wk  = Number(document.getElementById('r-wk').value)  || 4;
+
+  const config = { fps, width: w, height: h, pixelRatio: px };
+  if (dur > 0) config.durationInFrames = Math.round(dur * fps);
+
+  return { config, concurrency: wk };
+}
+
+async function postFile(file, audio, { config, concurrency }) {
+  const fd = new FormData();
+  fd.append('scene', file);
+  if (audio) fd.append('audio', audio);
+  fd.append('config', JSON.stringify(config));
+  fd.append('concurrency', String(concurrency));
+
+  const res = await fetch('/jobs', { method: 'POST', body: fd });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Erro ao submeter job');
+  return data.id;
+}
+
+async function postUrl(url, { config, concurrency }) {
+  const res = await fetch('/jobs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ input: url, config, concurrency }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Erro ao submeter job');
+  return data.id;
+}
+
+// ── Polling ──────────────────────────────────────────────────────────────────
+function startPoll(id) {
+  if (pollTimer) clearInterval(pollTimer);
+  progSec.classList.add('show');
+  jid.textContent = id.slice(0, 8) + '…';
+  setStatus('queued', 0, 'Na fila…');
+  dlArea.style.display = 'none';
+
+  pollTimer = setInterval(async () => {
+    try {
+      const res = await fetch('/jobs/' + id);
+      if (!res.ok) return;
+      const job = await res.json();
+      setStatus(job.status, job.progress, statusLabel(job));
+
+      if (job.status === 'done') {
+        dlArea.style.display = 'block';
+        dlLink.href          = '/jobs/' + id + '/output';
+        clearPoll(); setLoading(false); loadHist();
+      } else if (job.status === 'failed') {
+        clearPoll(); setLoading(false); loadHist();
+      }
+    } catch { /* network hiccup — keep polling */ }
+  }, 1000);
+}
+
+function statusLabel(j) {
+  if (j.status === 'queued')    return 'Na fila…';
+  if (j.status === 'rendering') return 'Renderizando frames… ' + j.progress + '%';
+  if (j.status === 'done')      return '✓ Concluído!';
+  return '✕ Falhou: ' + (j.error || 'erro desconhecido');
+}
+
+function setStatus(status, pct, label) {
+  const labels = { queued: 'na fila', rendering: 'renderizando', done: 'concluído', failed: 'falhou' };
+  jbadge.className   = 'badge ' + status;
+  jbadge.textContent = labels[status] || status;
+  pfill.style.width  = pct + '%';
+  plabel.textContent = label;
+}
+
+function clearPoll() {
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+}
+
+// ── History ───────────────────────────────────────────────────────────────────
+refBtn.addEventListener('click', loadHist);
+
+async function loadHist() {
+  try {
+    const res = await fetch('/jobs');
+    if (!res.ok) return;
+    renderHist(await res.json());
+  } catch { /* server not reachable */ }
+}
+
+function renderHist(jobs) {
+  if (!jobs.length) {
+    jobsTbl.innerHTML = '<div class="empty">Nenhum job ainda.</div>';
+    return;
+  }
+
+  const rows = jobs.map(j => {
+    const dl = j.status === 'done'
+      ? `<a class="abt dl" href="/jobs/${j.id}/output" download>⬇ MP4</a>`
+      : '';
+    return `
+      <tr>
+        <td class="mono">${j.id.slice(0, 8)}…</td>
+        <td><span class="badge ${j.status}">${j.status}</span></td>
+        <td>${j.progress}%</td>
+        <td>${j.config?.width || '?'}×${j.config?.height || '?'} @${j.config?.fps || '?'}fps</td>
+        <td>${timeAgo(j.createdAt)}</td>
+        <td class="actions-cell">
+          ${dl}
+          <button class="abt del" onclick="delJob('${j.id}')">✕ Del</button>
+        </td>
+      </tr>`;
+  }).join('');
+
+  jobsTbl.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Status</th><th>Prog.</th>
+          <th>Config</th><th>Criado</th><th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+async function delJob(id) {
+  if (!confirm('Deletar este job e seus arquivos?')) return;
+  await fetch('/jobs/' + id, { method: 'DELETE' });
+  if (id === curJobId) { progSec.classList.remove('show'); curJobId = null; }
+  loadHist();
+}
+
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60)   return s + 's atrás';
+  if (s < 3600) return Math.floor(s / 60) + 'min atrás';
+  return Math.floor(s / 3600) + 'h atrás';
+}
+
+// ── UI helpers ────────────────────────────────────────────────────────────────
+function setLoading(v) {
+  renderBtn.disabled = v;
+  renderBtn.innerHTML = v
+    ? '⏳&nbsp;&nbsp;Submetendo…'
+    : '▶&nbsp;&nbsp;Renderizar para MP4';
+}
+function showErr(m) { errEl.textContent = m; errEl.classList.add('show'); }
+function hideErr()  { errEl.classList.remove('show'); }
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadHist();
+setInterval(loadHist, 10000);
+</script>
+</body>
+</html>

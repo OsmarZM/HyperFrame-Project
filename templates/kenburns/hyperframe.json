@@ -1,0 +1,12 @@
+{
+  "fps": 30,
+  "durationInFrames": 150,
+  "width": 1920,
+  "height": 1080,
+  "props": {
+    "src": "photo.jpg",
+    "title": "Your Title Here",
+    "zoomFrom": 1.0,
+    "zoomTo": 1.15
+  }
+}

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+storage/
+tmp/
+output/
+*.mp4
+*.png
+server.log
+server-err.log

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1920px;height:1080px;overflow:hidden;background:#0a0a0f;font-family:'Segoe UI',Arial,sans-serif;color:#fff}
+
+/* ── Slides ─────────────────────────────────────────────────────────── */
+.slide{position:absolute;inset:0;opacity:0;pointer-events:none}
+.slide.active{opacity:1}
+
+/* ── Fundo gradiente animado ─────────────────────────────────────────── */
+#bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,#12063a 0%,#0a0a0f 60%)}
+#bg-accent{position:absolute;width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(220,38,38,0.15) 0%,transparent 70%);
+  top:-200px;right:-200px;transform-origin:center}
+
+/* ── Grid de pontos ─────────────────────────────────────────────────── */
+#dot-grid{position:absolute;inset:0;opacity:0.07;
+  background-image:radial-gradient(circle,#fff 1px,transparent 1px);
+  background-size:48px 48px}
+
+/* ── Slide 0: Intro ─────────────────────────────────────────────────── */
+#s0-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.5);opacity:0}
+#s0-logo .brand{font-size:90px;font-weight:900;letter-spacing:-2px;text-align:center}
+#s0-logo .brand span{color:#dc2626}
+#s0-logo .tagline{font-size:28px;color:rgba(255,255,255,0.6);text-align:center;margin-top:16px;letter-spacing:4px;text-transform:uppercase}
+#s0-line{position:absolute;top:calc(50% + 80px);left:50%;width:0;height:3px;
+  background:linear-gradient(90deg,transparent,#dc2626,transparent);transform:translateX(-50%)}
+#s0-sub{position:absolute;top:calc(50% + 130px);left:50%;transform:translateX(-50%);
+  font-size:22px;color:rgba(255,255,255,0.4);letter-spacing:6px;text-transform:uppercase;opacity:0;white-space:nowrap}
+
+/* ── Slide 1: "O que é HyperFrame?" ─────────────────────────────────── */
+#s1{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px}
+#s1-title{font-size:72px;font-weight:800;text-align:center;opacity:0;transform:translateY(30px)}
+#s1-title span{color:#dc2626}
+#s1-diagram{display:flex;align-items:center;gap:48px;opacity:0}
+.diag-box{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:16px;padding:36px 48px;text-align:center;min-width:260px}
+.diag-box .icon{font-size:56px;margin-bottom:16px;display:block}
+.diag-box .label{font-size:22px;font-weight:700;color:#fff}
+.diag-box .sub{font-size:16px;color:rgba(255,255,255,0.5);margin-top:8px}
+.diag-arrow{font-size:48px;color:#dc2626;font-weight:900}
+.diag-box.highlight{border-color:#dc2626;background:rgba(220,38,38,0.12)}
+#s1-caption{font-size:22px;color:rgba(255,255,255,0.5);text-align:center;opacity:0;max-width:900px;line-height:1.6}
+
+/* ── Slide 2: Pipeline ─────────────────────────────────────────────── */
+#s2{padding:80px 160px}
+#s2-title{font-size:60px;font-weight:800;margin-bottom:60px;opacity:0;transform:translateX(-40px)}
+#s2-title span{color:#dc2626}
+.pipeline{display:flex;flex-direction:column;gap:0}
+.pipe-step{display:flex;align-items:center;gap:32px;padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.07);opacity:0;transform:translateX(-30px)}
+.pipe-num{width:56px;height:56px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;flex-shrink:0}
+.pipe-info .pipe-name{font-size:26px;font-weight:700}
+.pipe-info .pipe-desc{font-size:18px;color:rgba(255,255,255,0.5);margin-top:4px}
+.pipe-info .pipe-code{font-size:16px;color:#60a5fa;font-family:monospace;margin-top:6px;background:rgba(96,165,250,0.1);padding:4px 12px;border-radius:6px;display:inline-block}
+.pipe-icon{margin-left:auto;font-size:40px;flex-shrink:0}
+
+/* ── Slide 3: API window.setFrame ──────────────────────────────────── */
+#s3{padding:80px 160px}
+#s3-title{font-size:60px;font-weight:800;margin-bottom:50px;opacity:0}
+#s3-title span{color:#dc2626}
+.api-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.api-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px;opacity:0;transform:translateY(20px)}
+.api-card.red{border-color:rgba(220,38,38,0.4);background:rgba(220,38,38,0.06)}
+.api-card h3{font-size:28px;font-weight:700;margin-bottom:12px}
+.api-card h3 code{color:#fbbf24;font-family:monospace}
+.api-card p{font-size:18px;color:rgba(255,255,255,0.55);line-height:1.6}
+.code-block{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:24px 32px;font-family:monospace;font-size:17px;line-height:1.8;color:#e2e8f0;margin-top:16px}
+.code-block .kw{color:#ff79c6}
+.code-block .fn{color:#50fa7b}
+.code-block .str{color:#f1fa8c}
+.code-block .cm{color:#6272a4}
+.code-block .num{color:#bd93f9}
+
+/* ── Slide 4: Arquitetura em camadas ─────────────────────────────────── */
+#s4{padding:80px 160px}
+#s4-title{font-size:60px;font-weight:800;margin-bottom:50px;opacity:0}
+#s4-title span{color:#dc2626}
+.layers{display:flex;flex-direction:column;gap:16px}
+.layer{border-radius:16px;padding:24px 40px;display:flex;align-items:center;gap:32px;opacity:0;transform:scaleX(0.9)}
+.layer-cli{background:rgba(139,92,246,0.15);border:1.5px solid rgba(139,92,246,0.4)}
+.layer-server{background:rgba(59,130,246,0.15);border:1.5px solid rgba(59,130,246,0.4)}
+.layer-core{background:rgba(220,38,38,0.15);border:1.5px solid rgba(220,38,38,0.4)}
+.layer-puppeteer{background:rgba(251,191,36,0.1);border:1.5px solid rgba(251,191,36,0.3)}
+.layer-ffmpeg{background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.3)}
+.layer-icon{font-size:40px;flex-shrink:0}
+.layer-info h3{font-size:26px;font-weight:700}
+.layer-info p{font-size:17px;color:rgba(255,255,255,0.5);margin-top:4px}
+.layer-modules{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.mod-tag{background:rgba(255,255,255,0.08);border-radius:8px;padding:6px 14px;font-size:14px;font-family:monospace;color:rgba(255,255,255,0.7)}
+
+/* ── Slide 5: Uso rápido ─────────────────────────────────────────────── */
+#s5{padding:80px 160px}
+#s5-title{font-size:60px;font-weight:800;margin-bottom:50px;opacity:0}
+#s5-title span{color:#dc2626}
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.use-panel{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px;opacity:0}
+.use-panel h3{font-size:26px;font-weight:700;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.use-panel h3 .badge{background:#dc2626;font-size:14px;padding:4px 12px;border-radius:6px;font-weight:600}
+
+/* ── Slide 6: Docs map ───────────────────────────────────────────────── */
+#s6{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:48px}
+#s6-title{font-size:60px;font-weight:800;text-align:center;opacity:0}
+#s6-title span{color:#dc2626}
+.doc-map{display:flex;align-items:center;gap:24px;opacity:0}
+.doc-node{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.15);border-radius:16px;
+  padding:24px 32px;text-align:center;min-width:200px}
+.doc-node.center{border-color:#dc2626;background:rgba(220,38,38,0.1);transform:scale(1.1)}
+.doc-node .doc-icon{font-size:36px;margin-bottom:8px}
+.doc-node .doc-name{font-size:20px;font-weight:700}
+.doc-node .doc-file{font-size:13px;color:rgba(255,255,255,0.4);font-family:monospace;margin-top:4px}
+.doc-conn{display:flex;flex-direction:column;align-items:center;gap:8px}
+.doc-conn .arrow{font-size:24px;color:#dc2626}
+
+/* ── Slide 7: Outro ──────────────────────────────────────────────────── */
+#s7{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+#s7-logo{font-size:80px;font-weight:900;text-align:center;opacity:0;letter-spacing:-1px}
+#s7-logo span{color:#dc2626}
+#s7-sub{font-size:26px;color:rgba(255,255,255,0.5);text-align:center;opacity:0;letter-spacing:3px}
+#s7-links{display:flex;gap:32px;opacity:0}
+.link-pill{background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);
+  border-radius:50px;padding:16px 36px;font-size:20px;text-align:center}
+.link-pill .lp-label{font-size:13px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:2px}
+.link-pill .lp-val{font-size:20px;font-weight:700;margin-top:4px}
+#s7-line{width:0;height:3px;background:linear-gradient(90deg,transparent,#dc2626,transparent)}
+
+/* ── HUD ──────────────────────────────────────────────────────────────── */
+#hud{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.08)}
+#hud-bar{height:100%;width:0;background:linear-gradient(90deg,#dc2626,#ef4444);transition:none}
+
+/* ── Chapter label ────────────────────────────────────────────────────── */
+#chapter{position:absolute;top:48px;right:80px;font-size:16px;color:rgba(255,255,255,0.35);
+  letter-spacing:3px;text-transform:uppercase;opacity:0}
+#chapter-num{color:#dc2626;font-weight:700}
+</style>
+<script>
+window.hyperframe = { fps: 30, durationInFrames: 1800, width: 1920, height: 1080 };
+
+/* ── Utilitários de easing ─────────────────────────────────────────── */
+function easeOut(t){ return 1 - Math.pow(1-t,3); }
+function easeIn(t){ return t*t*t; }
+function easeInOut(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+function easeElastic(t){
+  const c4=(2*Math.PI)/3;
+  return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1;
+}
+function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+function inv(t,a,b){ return clamp((t-a)/(b-a),0,1); }
+
+/* ── Helpers ─────────────────────────────────────────────────────────── */
+function $ (id){ return document.getElementById(id); }
+function setO(el,v){ if(el) el.style.opacity=v; }
+function setT(el,v){ if(el) el.style.transform=v; }
+function setW(el,v){ if(el) el.style.width=v; }
+
+/* ── Slide manager ────────────────────────────────────────────────────── */
+let _lastSlide = -1;
+function showSlide(idx){
+  if(idx === _lastSlide) return;
+  document.querySelectorAll('.slide').forEach((s,i)=>{
+    s.classList.toggle('active', i===idx);
+  });
+  _lastSlide = idx;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   setFrame — 60 s @ 30 fps = 1800 frames
+   Timeline (segundos):
+     0–3   Intro logo
+     3–8   Slide 1: O que é HyperFrame
+     8–14  Slide 2: Pipeline
+    14–20  Slide 3: API window.setFrame
+    20–26  Slide 4: Arquitetura em camadas
+    26–32  Slide 5: Como usar
+    32–38  Slide 6: Mapa da documentação
+    38–44  Slide 7: Outro
+    44–60  Fade-out / Hold
+───────────────────────────────────────────────────────────────────── */
+window.setFrame = function(n){
+  const t = n / 30;
+  const total = 60;
+  const pct = t / total;
+
+  /* HUD */
+  $('hud-bar').style.width = (pct*100) + '%';
+
+  /* Fundo pulsante */
+  const pulse = 0.5 + 0.5*Math.sin(t*0.4);
+  $('bg-accent').style.opacity = 0.5 + pulse*0.5;
+  $('bg-accent').style.transform = `scale(${0.9 + pulse*0.2})`;
+
+  /* Chapter label */
+  if(t > 2 && t < 44){
+    setO($('chapter'), easeOut(inv(t,2,3)));
+  } else {
+    setO($('chapter'), 0);
+  }
+
+  /* ═══════════════════ SLIDE 0: INTRO (0–3s) ══════════════════════ */
+  if(t < 4){
+    showSlide(0);
+    const logoT = easeElastic(clamp(inv(t,0.3,2),0,1));
+    setO($('s0-logo'), inv(t,0.3,1.5));
+    setT($('s0-logo'), `translate(-50%,-50%) scale(${0.5 + logoT*0.5})`);
+    setW($('s0-line'), (inv(t,1.8,2.8)*900)+'px');
+    setO($('s0-sub'), easeOut(inv(t,2.2,3.2)));
+    $('chapter').innerHTML = '';
+  }
+
+  /* ═══════════════════ SLIDE 1: O que é (3–8s) ════════════════════ */
+  else if(t < 9){
+    showSlide(1);
+    $('chapter').innerHTML = '<span id="chapter-num">01</span> — O que é HyperFrame?';
+    const lt = inv(t,3,4);
+    setO($('s1-title'), easeOut(lt)); setT($('s1-title'),`translateY(${(1-easeOut(lt))*30}px)`);
+    setO($('s1-diagram'), easeOut(inv(t,4,5.5)));
+    setO($('s1-caption'), easeOut(inv(t,5.5,6.5)));
+  }
+
+  /* ═══════════════════ SLIDE 2: PIPELINE (8–14s) ══════════════════ */
+  else if(t < 15){
+    showSlide(2);
+    $('chapter').innerHTML = '<span id="chapter-num">02</span> — Pipeline de Renderização';
+    setO($('s2-title'), easeOut(inv(t,8,9))); setT($('s2-title'),`translateX(${(1-easeOut(inv(t,8,9)))*-40}px)`);
+    const steps = document.querySelectorAll('.pipe-step');
+    steps.forEach((s,i)=>{
+      const pt = inv(t, 9 + i*0.4, 10 + i*0.4);
+      s.style.opacity = easeOut(pt);
+      s.style.transform = `translateX(${(1-easeOut(pt))*-30}px)`;
+    });
+  }
+
+  /* ═══════════════════ SLIDE 3: API (14–20s) ══════════════════════ */
+  else if(t < 21){
+    showSlide(3);
+    $('chapter').innerHTML = '<span id="chapter-num">03</span> — API window.setFrame';
+    setO($('s3-title'), easeOut(inv(t,14,15)));
+    const cards = document.querySelectorAll('.api-card');
+    cards.forEach((c,i)=>{
+      const ct = inv(t, 15 + i*0.6, 16 + i*0.6);
+      c.style.opacity = easeOut(ct);
+      c.style.transform = `translateY(${(1-easeOut(ct))*20}px)`;
+    });
+  }
+
+  /* ═══════════════════ SLIDE 4: ARQUITETURA (20–26s) ══════════════ */
+  else if(t < 27){
+    showSlide(4);
+    $('chapter').innerHTML = '<span id="chapter-num">04</span> — Arquitetura em Camadas';
+    setO($('s4-title'), easeOut(inv(t,20,21)));
+    const layers = document.querySelectorAll('.layer');
+    layers.forEach((l,i)=>{
+      const lt2 = inv(t, 21 + i*0.35, 22 + i*0.35);
+      l.style.opacity = easeOut(lt2);
+      l.style.transform = `scaleX(${0.9 + easeOut(lt2)*0.1})`;
+    });
+  }
+
+  /* ═══════════════════ SLIDE 5: USO (26–32s) ══════════════════════ */
+  else if(t < 33){
+    showSlide(5);
+    $('chapter').innerHTML = '<span id="chapter-num">05</span> — Como Usar';
+    setO($('s5-title'), easeOut(inv(t,26,27)));
+    const panels = document.querySelectorAll('.use-panel');
+    panels.forEach((p,i)=>{
+      p.style.opacity = easeOut(inv(t, 27 + i*0.7, 28.5 + i*0.7));
+    });
+  }
+
+  /* ═══════════════════ SLIDE 6: DOCS MAP (32–38s) ══════════════════ */
+  else if(t < 39){
+    showSlide(6);
+    $('chapter').innerHTML = '<span id="chapter-num">06</span> — Documentação';
+    setO($('s6-title'), easeOut(inv(t,32,33)));
+    setO($('doc-map'), easeOut(inv(t,33.5,35)));
+  }
+
+  /* ═══════════════════ SLIDE 7: OUTRO (38–44s) ════════════════════ */
+  else if(t < 44){
+    showSlide(7);
+    $('chapter').innerHTML = '';
+    setO($('s7-logo'), easeElastic(clamp(inv(t,38,40.5),0,1)));
+    setO($('s7-sub'), easeOut(inv(t,40.5,42)));
+    setW($('s7-line'), (easeOut(inv(t,41,43))*600)+'px');
+    setO($('s7-links'), easeOut(inv(t,42,43.5)));
+  }
+
+  /* ═══════════════════ HOLD / FADE OUT (44–60s) ═══════════════════ */
+  else {
+    showSlide(7);
+    const fade = 1 - easeIn(inv(t,56,60));
+    document.body.style.opacity = fade;
+  }
+};
+
+/* Pré-aquecimento do DOM */
+window.hyperframeReady = Promise.resolve();
+</script>
+</head>
+<body>
+
+<!-- Fundo -->
+<div id="bg"></div>
+<div id="bg-accent"></div>
+<div id="dot-grid"></div>
+
+<!-- HUD progress bar -->
+<div id="hud"><div id="hud-bar"></div></div>
+
+<!-- Chapter label -->
+<div id="chapter"></div>
+
+<!-- ═══ SLIDE 0: INTRO ═══════════════════════════════════════════════ -->
+<div class="slide active" id="slide-0">
+  <div id="s0-logo">
+    <div class="brand">HYPER<span>FRAME</span></div>
+    <div class="tagline">Motor de Vídeo para Web</div>
+  </div>
+  <div id="s0-line"></div>
+  <div id="s0-sub">HTML + CSS + JS → MP4</div>
+</div>
+
+<!-- ═══ SLIDE 1: O QUE É ══════════════════════════════════════════════ -->
+<div class="slide" id="slide-1">
+  <div id="s1">
+    <div id="s1-title">O que é o <span>HyperFrame</span>?</div>
+    <div id="s1-diagram">
+      <div class="diag-box">
+        <span class="icon">📄</span>
+        <div class="label">HTML + CSS + JS</div>
+        <div class="sub">Sua animação web</div>
+      </div>
+      <div class="diag-arrow">→</div>
+      <div class="diag-box highlight">
+        <span class="icon">🎬</span>
+        <div class="label">HyperFrame</div>
+        <div class="sub">Puppeteer + FFmpeg</div>
+      </div>
+      <div class="diag-arrow">→</div>
+      <div class="diag-box">
+        <span class="icon">🎥</span>
+        <div class="label">MP4 (H.264)</div>
+        <div class="sub">1920×1080 @ 30fps</div>
+      </div>
+    </div>
+    <div id="s1-caption">
+      Em vez de gravar a tela em tempo real, o HyperFrame avança o tempo <strong>virtualmente</strong>,
+      frame a frame, captura screenshots e encoda em vídeo de alta qualidade.
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2: PIPELINE ═════════════════════════════════════════════ -->
+<div class="slide" id="slide-2">
+  <div id="s2">
+    <div id="s2-title">Pipeline de <span>Renderização</span></div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">1</div>
+        <div class="pipe-info">
+          <div class="pipe-name">Resolver Cena</div>
+          <div class="pipe-desc">URL remota, arquivo .html ou pasta — tudo aceito</div>
+          <div class="pipe-code">scene-loader.ts → loadScene()</div>
+        </div>
+        <div class="pipe-icon">🔗</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">2</div>
+        <div class="pipe-info">
+          <div class="pipe-name">Ler Metadados</div>
+          <div class="pipe-desc">Lê window.hyperframe (fps, frames, resolução) via Puppeteer</div>
+          <div class="pipe-code">renderer.ts → readSceneMetadata()</div>
+        </div>
+        <div class="pipe-icon">📋</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">3</div>
+        <div class="pipe-info">
+          <div class="pipe-name">Dividir Carga</div>
+          <div class="pipe-desc">Distribui frames entre workers paralelos (worker_threads)</div>
+          <div class="pipe-code">partition.ts → partitionFrames()</div>
+        </div>
+        <div class="pipe-icon">⚡</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">4</div>
+        <div class="pipe-info">
+          <div class="pipe-name">Capturar Frames</div>
+          <div class="pipe-desc">Para cada frame: setFrame(n) → screenshot PNG</div>
+          <div class="pipe-code">renderer.ts → renderFrames()</div>
+        </div>
+        <div class="pipe-icon">📸</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">5</div>
+        <div class="pipe-info">
+          <div class="pipe-name">Encodar MP4</div>
+          <div class="pipe-desc">FFmpeg: PNGs → H.264/AAC, CRF 18, yuv420p, faststart</div>
+          <div class="pipe-code">encoder.ts → encodeVideo()</div>
+        </div>
+        <div class="pipe-icon">🎞️</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3: API ══════════════════════════════════════════════════ -->
+<div class="slide" id="slide-3">
+  <div id="s3">
+    <div id="s3-title">API <span>window.setFrame</span></div>
+    <div class="api-grid">
+      <div class="api-card red">
+        <h3><code>window.hyperframe</code></h3>
+        <p>Declara os metadados da cena: fps, total de frames e resolução.</p>
+        <div class="code-block">
+          <span class="kw">window</span>.hyperframe = {<br>
+          &nbsp;&nbsp;fps: <span class="num">30</span>,<br>
+          &nbsp;&nbsp;durationInFrames: <span class="num">900</span>, <span class="cm">// 30s</span><br>
+          &nbsp;&nbsp;width: <span class="num">1920</span>,<br>
+          &nbsp;&nbsp;height: <span class="num">1080</span><br>
+          };
+        </div>
+      </div>
+      <div class="api-card">
+        <h3><code>window.setFrame(n)</code></h3>
+        <p>Chamado para cada frame. Atualiza o DOM baseado no índice <code>n</code>.</p>
+        <div class="code-block">
+          <span class="kw">window</span>.<span class="fn">setFrame</span> = <span class="kw">function</span>(n) {<br>
+          &nbsp;&nbsp;<span class="kw">const</span> t = n / <span class="num">30</span>; <span class="cm">// segundos</span><br>
+          &nbsp;&nbsp;el.style.left = (t * <span class="num">200</span>) + <span class="str">'px'</span>;<br>
+          };
+        </div>
+      </div>
+      <div class="api-card">
+        <h3><code>window.hyperframeReady</code></h3>
+        <p>Promise aguardada antes do render. Use para pré-carregar imagens e fontes.</p>
+        <div class="code-block">
+          <span class="kw">window</span>.hyperframeReady = <span class="kw">new</span> <span class="fn">Promise</span>(res => {<br>
+          &nbsp;&nbsp;<span class="kw">const</span> img = <span class="kw">new</span> <span class="fn">Image</span>();<br>
+          &nbsp;&nbsp;img.onload = res;<br>
+          &nbsp;&nbsp;img.src = <span class="str">'https://cdn.../img.png'</span>;<br>
+          });
+        </div>
+      </div>
+      <div class="api-card">
+        <h3>Shim Automático</h3>
+        <p>Cenas sem <code>setFrame</code> recebem um shim que virtualiza <code>Date.now</code>, <code>rAF</code> e timers.</p>
+        <div class="code-block">
+          <span class="cm">// html-adapter.ts injeta automaticamente:</span><br>
+          Date.<span class="fn">now</span>()          → relógio virtual<br>
+          <span class="fn">requestAnimationFrame</span> → fila virtual<br>
+          <span class="fn">setTimeout</span>/<span class="fn">setInterval</span>  → timers virtuais
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4: ARQUITETURA ══════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div id="s4">
+    <div id="s4-title">Arquitetura em <span>Camadas</span></div>
+    <div class="layers">
+      <div class="layer layer-cli">
+        <div class="layer-icon">⌨️</div>
+        <div class="layer-info">
+          <h3>CLI</h3>
+          <p>Interface de linha de comando via Commander</p>
+        </div>
+        <div class="layer-modules">
+          <span class="mod-tag">cli/index.ts</span>
+          <span class="mod-tag">hyperframe render</span>
+          <span class="mod-tag">hyperframe serve</span>
+        </div>
+      </div>
+      <div class="layer layer-server">
+        <div class="layer-icon">🌐</div>
+        <div class="layer-info">
+          <h3>Servidor API (Fastify)</h3>
+          <p>REST API com fila de jobs via p-queue</p>
+        </div>
+        <div class="layer-modules">
+          <span class="mod-tag">server/index.ts</span>
+          <span class="mod-tag">server/db.ts</span>
+          <span class="mod-tag">POST /jobs</span>
+          <span class="mod-tag">GET /jobs/:id</span>
+        </div>
+      </div>
+      <div class="layer layer-core">
+        <div class="layer-icon">⚙️</div>
+        <div class="layer-info">
+          <h3>Core</h3>
+          <p>Pipeline principal: orchestrator, renderer, encoder</p>
+        </div>
+        <div class="layer-modules">
+          <span class="mod-tag">orchestrator</span>
+          <span class="mod-tag">renderer</span>
+          <span class="mod-tag">encoder</span>
+          <span class="mod-tag">worker-pool</span>
+        </div>
+      </div>
+      <div class="layer layer-puppeteer">
+        <div class="layer-icon">🤖</div>
+        <div class="layer-info">
+          <h3>Puppeteer (Chromium)</h3>
+          <p>Captura de screenshots frame a frame em modo headless</p>
+        </div>
+        <div class="layer-modules">
+          <span class="mod-tag">headless: true</span>
+          <span class="mod-tag">worker_threads</span>
+          <span class="mod-tag">PNG frames</span>
+        </div>
+      </div>
+      <div class="layer layer-ffmpeg">
+        <div class="layer-icon">🎬</div>
+        <div class="layer-info">
+          <h3>FFmpeg (fluent-ffmpeg)</h3>
+          <p>Encoder H.264/AAC — libx264, CRF 18, yuv420p</p>
+        </div>
+        <div class="layer-modules">
+          <span class="mod-tag">ffmpeg-static</span>
+          <span class="mod-tag">libx264</span>
+          <span class="mod-tag">AAC 192k</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5: USO ══════════════════════════════════════════════════ -->
+<div class="slide" id="slide-5">
+  <div id="s5">
+    <div id="s5-title">Como <span>Usar</span></div>
+    <div class="use-grid">
+      <div class="use-panel">
+        <h3>⌨️ Via CLI <span class="badge">render</span></h3>
+        <div class="code-block">
+          <span class="cm"># Build do projeto</span><br>
+          npm run build<br><br>
+          <span class="cm"># Renderizar cena local</span><br>
+          node dist/cli/index.js <span class="fn">render</span> \<br>
+          &nbsp;&nbsp;Modelos/cena.html \<br>
+          &nbsp;&nbsp;-o output/video.mp4<br><br>
+          <span class="cm"># Com opções</span><br>
+          node dist/cli/index.js <span class="fn">render</span> cena.html \<br>
+          &nbsp;&nbsp;--fps <span class="num">30</span> --width <span class="num">1920</span> --height <span class="num">1080</span>
+        </div>
+      </div>
+      <div class="use-panel">
+        <h3>🌐 Via API <span class="badge">serve</span></h3>
+        <div class="code-block">
+          <span class="cm"># Iniciar servidor</span><br>
+          node dist/cli/index.js <span class="fn">serve</span><br><br>
+          <span class="cm"># Submeter job</span><br>
+          curl -X POST localhost:<span class="num">3002</span>/jobs \<br>
+          &nbsp;&nbsp;-F <span class="str">"scene=@cena.html"</span> \<br>
+          &nbsp;&nbsp;-F <span class="str">'config={"fps":30,...}'</span><br><br>
+          <span class="cm"># Monitorar</span><br>
+          curl localhost:<span class="num">3002</span>/jobs/&lt;id&gt;
+        </div>
+      </div>
+      <div class="use-panel">
+        <h3>📄 Cena Mínima</h3>
+        <div class="code-block">
+          <span class="kw">window</span>.hyperframe = {<br>
+          &nbsp;&nbsp;fps: <span class="num">30</span>, durationInFrames: <span class="num">90</span>,<br>
+          &nbsp;&nbsp;width: <span class="num">1920</span>, height: <span class="num">1080</span><br>
+          };<br><br>
+          <span class="kw">window</span>.<span class="fn">setFrame</span> = <span class="kw">function</span>(n) {<br>
+          &nbsp;&nbsp;<span class="kw">const</span> t = n / <span class="num">30</span>;<br>
+          &nbsp;&nbsp;el.style.opacity = t / <span class="num">3</span>;<br>
+          };
+        </div>
+      </div>
+      <div class="use-panel">
+        <h3>📤 Upload via Node.js</h3>
+        <div class="code-block">
+          <span class="cm">// upload-job.js</span><br>
+          <span class="kw">const</span> config = {<br>
+          &nbsp;&nbsp;fps: <span class="num">30</span>, durationInFrames: <span class="num">900</span>,<br>
+          &nbsp;&nbsp;width: <span class="num">1920</span>, height: <span class="num">1080</span>,<br>
+          &nbsp;&nbsp;concurrency: <span class="num">1</span>,<br>
+          &nbsp;&nbsp;outputPath: <span class="str">'output/video.mp4'</span><br>
+          };<br>
+          <span class="cm">// Multipart POST → STATUS 202</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 6: DOCS MAP ═════════════════════════════════════════════ -->
+<div class="slide" id="slide-6">
+  <div id="s6">
+    <div id="s6-title">Mapa da <span>Documentação</span></div>
+    <div id="doc-map">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="doc-node">
+          <div class="doc-icon">⚙️</div>
+          <div class="doc-name">Arquitetura</div>
+          <div class="doc-file">architecture.md</div>
+        </div>
+        <div class="doc-node">
+          <div class="doc-icon">🌐</div>
+          <div class="doc-name">API REST</div>
+          <div class="doc-file">api.md</div>
+        </div>
+      </div>
+      <div class="doc-conn">
+        <div class="arrow">←→</div>
+        <div class="arrow">←→</div>
+        <div class="arrow">←→</div>
+      </div>
+      <div class="doc-node center">
+        <div class="doc-icon">📖</div>
+        <div class="doc-name">README</div>
+        <div class="doc-file">docs/README.md</div>
+      </div>
+      <div class="doc-conn">
+        <div class="arrow">←→</div>
+        <div class="arrow">←→</div>
+        <div class="arrow">←→</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="doc-node">
+          <div class="doc-icon">⌨️</div>
+          <div class="doc-name">CLI</div>
+          <div class="doc-file">cli.md</div>
+        </div>
+        <div class="doc-node">
+          <div class="doc-icon">🎬</div>
+          <div class="doc-name">Autoria de Cenas</div>
+          <div class="doc-file">scene-authoring.md</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:20px;color:rgba(255,255,255,0.4);text-align:center;opacity:0.7">
+      Cada documento possui links de navegação para os demais — acesse por qualquer ponto.
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 7: OUTRO ════════════════════════════════════════════════ -->
+<div class="slide" id="slide-7">
+  <div id="s7">
+    <div id="s7-logo">HYPER<span>FRAME</span></div>
+    <div id="s7-sub">Motor de Vídeo para Web · v0.1.0 · MIT License</div>
+    <div id="s7-line"></div>
+    <div id="s7-links">
+      <div class="link-pill">
+        <div class="lp-label">Documentação</div>
+        <div class="lp-val">docs/README.md</div>
+      </div>
+      <div class="link-pill">
+        <div class="lp-label">GitHub</div>
+        <div class="lp-val">github.com/FortaTech/hyperframe</div>
+      </div>
+      <div class="link-pill">
+        <div class="lp-label">Desenvolvido por</div>
+        <div class="lp-val">FortaTech</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

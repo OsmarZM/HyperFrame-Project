@@ -1,0 +1,13 @@
+{
+  "fps": 30,
+  "durationInFrames": 225,
+  "width": 1920,
+  "height": 1080,
+  "props": {
+    "slides": [
+      { "src": "slide1.jpg", "caption": "Slide One" },
+      { "src": "slide2.jpg", "caption": "Slide Two" },
+      { "src": "slide3.jpg", "caption": "Slide Three" }
+    ]
+  }
+}

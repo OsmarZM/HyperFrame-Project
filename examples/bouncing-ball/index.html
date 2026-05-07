@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperFrame — Bouncing Ball</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px; height: 1080px; overflow: hidden;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #ball {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff6b6b, #c0392b);
+      box-shadow: 0 0 40px rgba(255,80,80,0.6);
+      position: absolute;
+    }
+    #label {
+      position: absolute; bottom: 40px; left: 0; right: 0;
+      text-align: center; color: rgba(255,255,255,0.4);
+      font: 18px 'Segoe UI', system-ui, sans-serif;
+      letter-spacing: 4px; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div id="ball"></div>
+  <div id="label">HyperFrame · Bouncing Ball Example</div>
+
+  <script>
+    // ─── HyperFrame contract ───────────────────────────────────────────────────
+    window.hyperframe = {
+      fps: 30,
+      durationInFrames: 90,  // 3 seconds
+      width: 1920,
+      height: 1080,
+    };
+
+    const ball = document.getElementById('ball');
+    const W = 1920, H = 1080, R = 40;
+    const totalFrames = 90;
+
+    // Physics parameters
+    const gravity = 0.8;
+    const initVY  = -18;
+    const initVX  = 6;
+
+    window.setFrame = function(frame) {
+      // Deterministic physics simulation up to `frame`
+      let x = 200, y = 300;
+      let vx = initVX, vy = initVY;
+
+      for (let i = 0; i < frame; i++) {
+        x += vx;
+        vy += gravity;
+        y += vy;
+
+        // Floor bounce
+        if (y + R > H - 20) { y = H - 20 - R; vy *= -0.78; }
+        // Ceiling
+        if (y - R < 0) { y = R; vy *= -0.78; }
+        // Walls
+        if (x + R > W) { x = W - R; vx *= -1; }
+        if (x - R < 0) { x = R; vx *= -1; }
+      }
+
+      ball.style.left = (x - R) + 'px';
+      ball.style.top  = (y - R) + 'px';
+    };
+
+    // Initialize at frame 0
+    window.setFrame(0);
+  </script>
+</body>
+</html>

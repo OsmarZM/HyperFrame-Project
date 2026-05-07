@@ -1,0 +1,1005 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>FORTA TECH — Comercial 2026</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000;font-family:'Segoe UI',Arial,sans-serif}
+img{display:block;max-width:100%}
+#chrome{position:fixed;top:0;left:0;width:1920px;height:124px;background:#222;z-index:100;opacity:0;pointer-events:none}
+.c-title{height:40px;background:#1e1e1e;display:flex;align-items:center;padding:0 16px;gap:8px}
+.tl{width:12px;height:12px;border-radius:50%}.tl-r{background:#ff5f57}.tl-y{background:#febc2e}.tl-g{background:#28c840}
+.c-tabwrap{display:flex;align-items:flex-end;height:40px;flex:1;padding:0 0 0 20px}
+.c-tab{height:32px;background:#222;border-radius:8px 8px 0 0;padding:0 20px;font-size:13px;color:#ccc;display:flex;align-items:center;gap:7px;border:1px solid #333;border-bottom:none;position:relative;top:1px}
+.c-tab-fav{width:14px;height:14px;background:#e31e24;border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;font-weight:900}
+.c-nav{height:44px;background:#292929;display:flex;align-items:center;padding:0 16px;gap:10px}
+.c-navbtn{width:28px;height:28px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center;color:#777;font-size:13px;cursor:default}
+#c-url{flex:1;max-width:860px;margin:0 auto;height:32px;background:#3a3a3a;border-radius:16px;display:flex;align-items:center;padding:0 14px;gap:7px}
+.c-lock{color:#5cb85c;font-size:12px}
+#urlTxt{font-size:13px;color:#e8e8e8;flex:1;white-space:nowrap;overflow:hidden}
+#vp{position:fixed;top:124px;left:0;width:1920px;height:956px;overflow:hidden;background:#fff}
+.page{position:absolute;top:0;left:0;width:1920px;background:#fff;display:none}
+#pg-home{display:block;top:0}
+.topbar{height:36px;background:#111;display:flex;align-items:center;justify-content:center;gap:48px}
+.tb-item{display:flex;align-items:center;gap:7px;color:#aaa;font-size:13px}
+.tb-icon{color:#e31e24;font-size:14px}
+.tb-sep{width:1px;height:20px;background:#2a2a2a}
+.sh{height:74px;background:#111;display:flex;align-items:center;padding:0 60px;gap:32px;border-bottom:1px solid #1e1e1e}
+.sh-logo{font-size:26px;font-weight:900;color:#fff;letter-spacing:1px;white-space:nowrap;flex-shrink:0}
+.sh-logo span{color:#e31e24}
+.sh-nav{display:flex;flex:1;align-items:center;gap:4px}
+.sh-nav a{color:#bbb;font-size:14px;padding:8px 13px;border-radius:4px;text-decoration:none;white-space:nowrap}
+.sh-nav a.act{color:#fff;background:rgba(255,255,255,.1)}
+.sh-search{width:240px;height:34px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:17px;display:flex;align-items:center;padding:0 14px;gap:7px;flex-shrink:0}
+.sh-search span{font-size:13px;color:#444}
+.sh-login{color:#bbb;font-size:13px;flex-shrink:0;padding:0 10px}
+.sh-cart{background:#e31e24;color:#fff;padding:10px 22px;border-radius:6px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sh-cart-n{background:rgba(255,255,255,.25);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.hero{height:560px;background:linear-gradient(125deg,#060000 0%,#1a0000 45%,#0e0e0e 100%);position:relative;overflow:hidden;display:flex;align-items:center}
+.hero-l{z-index:3;padding:0 80px;max-width:860px}
+.hero-pill{background:rgba(227,30,36,.15);border:1px solid rgba(227,30,36,.45);color:#e31e24;font-size:11px;font-weight:800;padding:5px 16px;border-radius:20px;display:inline-block;margin-bottom:18px;letter-spacing:2px;text-transform:uppercase}
+.hero h1{font-size:64px;font-weight:900;color:#fff;line-height:1;margin-bottom:12px}
+.hero h1 em{color:#e31e24;font-style:normal;display:block;margin-top:4px}
+.hero-sub{font-size:20px;color:#bbb;margin-bottom:8px;font-weight:400}
+.hero-desc{font-size:15px;color:#666;line-height:1.65;margin-bottom:32px;max-width:540px}
+.hero-btns{display:flex;gap:12px;align-items:center}
+.btn-r{background:#e31e24;color:#fff;padding:15px 36px;border-radius:8px;font-size:16px;font-weight:800;display:inline-flex;align-items:center;gap:8px}
+.btn-g{color:#ccc;padding:15px 22px;border-radius:8px;border:1px solid rgba(255,255,255,.18);font-size:15px;display:inline-flex;align-items:center;gap:7px}
+.hero-r{position:absolute;right:0;top:0;width:760px;height:560px;display:flex;align-items:center;justify-content:center}
+.hero-r img{height:490px;width:auto;object-fit:contain;filter:drop-shadow(0 0 90px rgba(227,30,36,.55))}
+.hero-vgr{position:absolute;right:320px;top:0;width:440px;height:560px;background:linear-gradient(to right,#060000,transparent);z-index:2}
+.hero-dots{position:absolute;bottom:22px;right:80px;display:flex;gap:8px;z-index:5}
+.hdot{width:8px;height:8px;border-radius:4px;background:rgba(255,255,255,.22)}
+.hdot.a{background:#e31e24;width:28px}
+.usp{height:54px;background:#e31e24;display:flex;align-items:center;justify-content:space-around;padding:0 80px}
+.usp-i{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;font-weight:600}
+.usp-sep{width:1px;height:26px;background:rgba(255,255,255,.28)}
+.sec{padding:64px 80px;background:#fff}
+.sec-g{background:#f5f5f5}
+.sec-dk{background:#0c0c0c}
+.sec-h{font-size:30px;font-weight:900;text-align:center;color:#111;margin-bottom:8px}
+.sec-h.wh{color:#fff}
+.sec-bar{width:48px;height:4px;background:#e31e24;border-radius:2px;margin:0 auto 38px}
+.sec-more{text-align:center;margin-top:32px}
+.sec-more a{display:inline-flex;align-items:center;gap:7px;background:#e31e24;color:#fff;padding:13px 30px;border-radius:7px;font-size:14px;font-weight:700;text-decoration:none}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cc{height:196px;border-radius:10px;position:relative;overflow:hidden}
+.cc-ft{position:absolute;bottom:0;left:0;right:0;padding:18px 22px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
+.cc-name{color:#fff;font-size:20px;font-weight:800;margin-bottom:3px}
+.cc-sub{color:rgba(255,255,255,.55);font-size:12px}
+.cc-arr{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+.pg{display:grid;gap:18px}
+.pg-4{grid-template-columns:repeat(4,1fr)}
+.pg-3{grid-template-columns:repeat(3,1fr)}
+.pg-5{grid-template-columns:repeat(5,1fr)}
+.pc{background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e8e8e8;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.pc.hot{border-color:#e31e24;box-shadow:0 0 0 2px rgba(227,30,36,.2),0 4px 18px rgba(227,30,36,.12)}
+.pc-img{height:200px;background:#f7f7f7;display:flex;align-items:center;justify-content:center;position:relative}
+.pc-img img{height:175px;width:auto;object-fit:contain}
+.pc-badge{position:absolute;top:9px;right:9px;background:#e31e24;color:#fff;font-size:11px;font-weight:800;padding:4px 9px;border-radius:12px}
+.pc-badge.b{background:#1565c0}
+.pc-body{padding:12px 14px 16px}
+.pc-name{font-size:13px;font-weight:600;color:#222;margin-bottom:8px;line-height:1.35;min-height:38px}
+.pc-old{font-size:12px;color:#bbb;text-decoration:line-through;margin-bottom:2px}
+.pc-price{font-size:24px;font-weight:800;color:#e31e24;line-height:1;margin-bottom:3px}
+.pc-inst{font-size:12px;color:#777;margin-bottom:12px}
+.pc-btn{display:block;background:#e31e24;color:#fff;text-align:center;padding:9px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none}
+.brands-row{display:flex;justify-content:center;align-items:center;gap:80px;padding:16px 0}
+.br-box{padding:16px 44px;border:2px solid rgba(255,255,255,.1);border-radius:8px;text-align:center}
+.br-name{color:#fff;font-size:30px;font-weight:900;letter-spacing:3px;display:block}
+.br-sub{color:#444;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.test-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:1400px;margin:0 auto}
+.tc{background:#fff;border-radius:10px;padding:28px;box-shadow:0 2px 16px rgba(0,0,0,.07);border-left:4px solid #e31e24}
+.tc-stars{color:#f5a623;font-size:14px;margin-bottom:8px}
+.tc-q{font-size:42px;color:#e31e24;line-height:.5;font-family:Georgia,serif;margin-bottom:6px}
+.tc-txt{font-size:15px;color:#555;line-height:1.75;margin-bottom:16px;font-style:italic}
+.tc-au strong{font-size:13px;color:#111}
+.tc-au span{font-size:12px;color:#888;display:block}
+.ft{background:#0a0a0a;border-top:3px solid #e31e24;padding:54px 80px 24px}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
+.ft-logo{font-size:24px;font-weight:900;color:#fff;margin-bottom:10px}
+.ft-logo span{color:#e31e24}
+.ft-desc{color:#3a3a3a;font-size:13px;line-height:1.8;margin-bottom:16px}
+.ft-soc{display:flex;gap:10px}
+.si{width:34px;height:34px;border-radius:50%;background:#181818;border:1px solid #272727;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px}
+.ft-col h4{color:#eee;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px}
+.ft-col a{display:block;color:#3a3a3a;font-size:13px;text-decoration:none;margin-bottom:7px}
+.ft-ct{color:#3a3a3a;font-size:13px;margin-bottom:7px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.ft-bot{border-top:1px solid #161616;padding-top:20px;display:flex;justify-content:space-between;align-items:center}
+.ft-copy{color:#2a2a2a;font-size:11px}
+.pay-row{display:flex;gap:6px}
+.pay-i{background:#141414;border:1px solid #222;border-radius:3px;padding:3px 8px;color:#555;font-size:10px;font-weight:700}
+#pg-cat{display:none}
+.pg-crumb{background:#f5f5f5;padding:16px 80px;border-bottom:1px solid #e8e8e8;font-size:12px;color:#aaa}
+.pg-crumb b{color:#e31e24}
+.pg-head{padding:28px 80px 22px;background:#f5f5f5;border-bottom:1px solid #e8e8e8}
+.pg-hname{font-size:30px;font-weight:900;color:#111;margin-bottom:4px}
+.pg-hsub{font-size:13px;color:#999}
+.pg-body{padding:36px 80px;background:#fff}
+.pg-filters{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.pf-lbl{font-size:13px;color:#888}
+.pf-lbl b{color:#111}
+.pf-sort{display:flex;gap:8px}
+.pf-btn{padding:6px 16px;border-radius:20px;background:#f0f0f0;font-size:13px;color:#555}
+.pf-btn.a{background:#e31e24;color:#fff}
+#pg-prod{display:none}
+.pd-bc{background:#f8f8f8;padding:14px 80px;border-bottom:1px solid #eee;font-size:12px;color:#aaa}
+.pd-bc b{color:#e31e24}
+.pd-layout{display:grid;grid-template-columns:560px 1fr;background:#fff;min-height:700px}
+.pd-gallery{padding:36px 28px 36px 80px}
+.pd-main-img{width:460px;height:460px;background:#f5f5f5;border-radius:12px;border:1px solid #eee;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden}
+.pd-main-img img{width:440px;height:440px;object-fit:contain}
+.pd-thumbs{display:flex;gap:10px}
+.pd-thumb{width:80px;height:80px;background:#f5f5f5;border-radius:8px;border:2px solid #e0e0e0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pd-thumb.a{border-color:#e31e24}
+.pd-thumb img{width:68px;height:68px;object-fit:contain}
+.pd-info{padding:36px 80px 36px 24px}
+.pd-brand-lbl{background:#f0f0f0;color:#777;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;margin-bottom:12px;display:inline-block;letter-spacing:1px;text-transform:uppercase}
+.pd-title{font-size:34px;font-weight:900;color:#111;line-height:1.1;margin-bottom:10px}
+.pd-rating{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.pd-stars{color:#f5a623;font-size:16px}
+.pd-rev{color:#888;font-size:13px}
+.price-box{background:#f9f9f9;border-radius:10px;padding:22px;margin-bottom:22px;border:1px solid #eee}
+.pb-old{font-size:14px;color:#bbb;text-decoration:line-through;margin-bottom:4px}
+.pb-main{font-size:52px;font-weight:900;color:#e31e24;line-height:1;margin-bottom:7px}
+.pb-inst{font-size:15px;color:#555;margin-bottom:8px}
+.pb-pix{display:inline-flex;align-items:center;gap:6px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:700;padding:5px 14px;border-radius:5px}
+.pd-feats{margin-bottom:24px}
+.pd-feats h3{font-size:15px;font-weight:700;color:#111;margin-bottom:12px}
+.pf-row{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #f2f2f2;font-size:14px;color:#555;align-items:flex-start}
+.pf-ck{color:#e31e24;font-weight:700;margin-top:1px}
+#add-btn{background:#e31e24;color:#fff;font-size:18px;font-weight:800;padding:17px;border-radius:9px;text-align:center;width:100%;cursor:pointer;margin-bottom:10px;display:block}
+.buy-now{border:2px solid #e31e24;color:#e31e24;background:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:9px;text-align:center;width:100%;display:block;margin-bottom:14px}
+.pd-secure{display:flex;align-items:center;gap:7px;color:#aaa;font-size:12px}
+#cart-ov{position:fixed;top:0;left:0;width:1920px;height:1080px;z-index:200;display:none;background:rgba(0,0,0,0)}
+#cart-panel{position:absolute;top:0;right:0;width:560px;height:1080px;background:#fff;display:flex;flex-direction:column;transform:translateX(560px);box-shadow:-10px 0 50px rgba(0,0,0,.4)}
+#cp-hd{background:#111;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+#cp-hd h2{color:#fff;font-size:18px;font-weight:700}
+.cp-x{color:#555;font-size:20px;font-weight:300}
+#cp-body{flex:1;overflow:hidden;padding:16px}
+.ci{display:flex;gap:14px;background:#f9f9f9;border:1px solid #eee;border-radius:9px;padding:14px}
+.ci-img{width:90px;height:90px;background:#f0f0f0;border-radius:7px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ci-img img{width:82px;height:82px;object-fit:contain}
+.ci-info{flex:1}
+.ci-name{font-size:13px;font-weight:600;color:#222;margin-bottom:5px;line-height:1.4}
+.ci-sku{font-size:11px;color:#bbb;margin-bottom:4px}
+.ci-qty{font-size:12px;color:#777;margin-bottom:6px}
+.ci-price{font-size:21px;font-weight:800;color:#e31e24}
+#cp-sum{padding:0 16px 10px;flex-shrink:0}
+.cs-r{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#666;border-bottom:1px solid #f0f0f0}
+.cs-r.t{font-size:16px;font-weight:900;color:#111;border:none;padding-top:12px}
+.cs-r.t .v{color:#e31e24;font-size:22px}
+.cs-free{color:#2e7d32;font-weight:700}
+#cp-pay{background:#fafafa;border-top:1px solid #eee;padding:10px 16px;flex-shrink:0}
+.cp-plbl{font-size:10px;color:#aaa;text-align:center;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+#cp-ft{padding:14px 16px;flex-shrink:0}
+#checkout-btn{display:block;width:100%;background:#e31e24;color:#fff;text-align:center;padding:17px;font-size:16px;font-weight:800;border-radius:9px;cursor:pointer;margin-bottom:9px}
+.cp-sec{text-align:center;font-size:11px;color:#aaa}
+#conf-ov{position:fixed;top:0;left:0;width:1920px;height:1080px;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7)}
+#conf-card{background:#fff;border-radius:18px;width:620px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.6);transform:scale(.85);opacity:0}
+.cc-hd{background:linear-gradient(135deg,#e31e24,#a00);padding:30px;text-align:center}
+.cc-ok{width:74px;height:74px;background:#2e7d32;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff}
+.cc-hd h2{color:#fff;font-size:28px;font-weight:800;margin-bottom:5px}
+.cc-hd p{color:rgba(255,255,255,.78);font-size:14px}
+.cc-body{padding:26px 28px}
+.cc-r{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;border-bottom:1px solid #f0f0f0;color:#777}
+.cc-r:last-child{border:none}
+.cc-r .v{color:#111;font-weight:700}
+.cc-foot{background:#f8f8f8;padding:16px 28px;text-align:center;font-size:12px;color:#999}
+.stats-row{display:flex;justify-content:space-around;padding:56px 80px;border-bottom:1px solid #1a1a1a}
+.st{text-align:center}
+.st-val{font-size:64px;font-weight:900;color:#e31e24;line-height:1}
+.st-lbl{font-size:14px;color:#555;margin-top:8px}
+#intro-canvas{position:fixed;top:0;left:0;width:1920px;height:1080px;z-index:500;pointer-events:none}
+#flash{position:fixed;top:0;left:0;width:1920px;height:1080px;background:#fff;opacity:0;z-index:400;pointer-events:none}
+#cursor{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;opacity:0;transform:translate(960px,540px)}
+#ripple{position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:0;border-radius:50%;background:rgba(227,30,36,.3);width:44px;height:44px;margin-left:-22px;margin-top:-22px}
+#hud{position:fixed;bottom:0;left:0;width:1920px;height:4px;z-index:9999;pointer-events:none}
+#hud-bg{position:absolute;inset:0;background:rgba(227,30,36,.12)}
+#hud-fill{position:absolute;top:0;left:0;height:4px;background:#e31e24;width:0;opacity:.7}
+#frm{position:fixed;bottom:6px;right:10px;color:rgba(255,255,255,.15);font-size:10px;font-family:monospace;z-index:9999}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:9992;background:radial-gradient(ellipse 110% 110% at 50% 50%,transparent 55%,rgba(0,0,0,.45) 100%)}
+#scanlines{position:fixed;inset:0;pointer-events:none;z-index:9991;background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,.02) 2px,rgba(0,0,0,.02) 3px)}
+</style>
+</head>
+<body><div id="chrome">
+  <div class="c-title">
+    <div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div>
+    <div class="c-tabwrap">
+      <div class="c-tab"><div class="c-tab-fav">F</div><span>FORTA TECH — Diagnosticos Automotivos</span></div>
+    </div>
+  </div>
+  <div class="c-nav">
+    <div class="c-navbtn">&#8592;</div>
+    <div class="c-navbtn">&#8594;</div>
+    <div class="c-navbtn">&#8635;</div>
+    <div id="c-url">
+      <span class="c-lock">&#128274;</span>
+      <span id="urlTxt">https://fortatech.com.br</span>
+    </div>
+    <div class="c-navbtn">&#8942;</div>
+  </div>
+</div>
+<div id="vp">
+<!-- HOME -->
+<div class="page" id="pg-home">
+  <div class="topbar">
+    <div class="tb-item"><span class="tb-icon">&#128179;</span> Parcele em ate 10x sem juros</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item"><span class="tb-icon">&#128230;</span> Entrega segura em todo o pais</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item"><span class="tb-icon">&#128176;</span> 5% de desconto na compra a vista</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item"><span class="tb-icon">&#9889;</span> Tecnologias inovadoras e imbativeis</div>
+  </div>
+  <div class="sh">
+    <div class="sh-logo">FORTA <span>TECH</span></div>
+    <nav class="sh-nav">
+      <a href="#" class="act">Inicio</a><a href="#">Scanners</a><a href="#">Diagnosticos</a>
+      <a href="#">Undercar</a><a href="#">Alinhadoras</a><a href="#">Ar Condicionado</a><a href="#">Balanceadoras</a>
+    </nav>
+    <div class="sh-search"><span>&#128269; Pesquisar produtos...</span></div>
+    <div class="sh-login">Entrar</div>
+    <div class="sh-cart">&#128722; Carrinho <div class="sh-cart-n">0</div></div>
+  </div>
+  <div class="hero">
+    <div class="hero-vgr"></div>
+    <div class="hero-l">
+      <div class="hero-pill">&#9889; LANCAMENTO 2026</div>
+      <h1>Scanner Profissional<em>CRP 123S HD</em></h1>
+      <div class="hero-sub">Diagnostico Completo para Veiculos Diesel Pesado</div>
+      <div class="hero-desc">Compativel com mais de 280 marcas. Cobertura total de sistemas: motor, cambio, freios ABS, airbag, TPMS e muito mais. Atualizacoes gratuitas por 2 anos.</div>
+      <div class="hero-btns">
+        <div class="btn-r">&#128722; Comprar Agora</div>
+        <div class="btn-g">&#9654; Ver Demonstracao</div>
+      </div>
+    </div>
+    <div class="hero-r">
+      <img src="https://fortatech.com.br/cdn/shop/files/202601221410492531generated_image_january_22_2026_-_2_09pm-photoroom_33601de3-7920-4901-bad6-f06da697cc66.png?v=1775650389&width=500" alt="CRP 123S HD" crossorigin="anonymous">
+    </div>
+    <div class="hero-dots"><div class="hdot a"></div><div class="hdot"></div><div class="hdot"></div><div class="hdot"></div></div>
+  </div>
+  <div class="usp">
+    <div class="usp-i">&#128179; Parcele em ate 10x sem juros</div>
+    <div class="usp-sep"></div>
+    <div class="usp-i">&#128230; Entrega segura em todo o pais</div>
+    <div class="usp-sep"></div>
+    <div class="usp-i">&#128176; 5% de desconto a vista</div>
+    <div class="usp-sep"></div>
+    <div class="usp-i">&#9889; Tecnologias inovadoras</div>
+  </div>
+  <div class="sec">
+    <div class="sec-h">NOSSAS LINHAS</div>
+    <div class="sec-bar"></div>
+    <div class="cat-grid">
+      <div class="cc" style="background:linear-gradient(135deg,#0d0d0d,#1a0a00)">
+        <div class="cc-ft"><div class="cc-name">Scanners</div><div class="cc-sub">OBD2 - Multi-Marca - Profissional</div></div>
+        <div class="cc-arr">&#8250;</div>
+      </div>
+      <div class="cc" style="background:linear-gradient(135deg,#0a0a14,#001a2e)">
+        <div class="cc-ft"><div class="cc-name">Diagnosticos</div><div class="cc-sub">Diesel - ABS - Airbag - TPMS</div></div>
+        <div class="cc-arr">&#8250;</div>
+      </div>
+      <div class="cc" style="background:linear-gradient(135deg,#0a1400,#0a2200)">
+        <div class="cc-ft"><div class="cc-name">Undercar</div><div class="cc-sub">Geometria - Suspensao - Freios</div></div>
+        <div class="cc-arr">&#8250;</div>
+      </div>
+      <div class="cc" style="background:linear-gradient(135deg,#14000a,#2a0014)">
+        <div class="cc-ft"><div class="cc-name">Alinhadoras</div><div class="cc-sub">3D - Laser - 4 Rodas</div></div>
+        <div class="cc-arr">&#8250;</div>
+      </div>
+      <div class="cc" style="background:linear-gradient(135deg,#001414,#002626)">
+        <div class="cc-ft"><div class="cc-name">Ar Condicionado</div><div class="cc-sub">Reciclagem - Recarga - Analise</div></div>
+        <div class="cc-arr">&#8250;</div>
+      </div>
+      <div class="cc" style="background:linear-gradient(135deg,#100a00,#241800)">
+        <div class="cc-ft"><div class="cc-name">Balanceadoras</div><div class="cc-sub">Dinamica - Estatica - Computadorizada</div></div>
+        <div class="cc-arr">&#8250;</div>
+      </div>
+    </div>
+    <div class="sec-more"><a href="#">Ver todas as linhas &#8250;</a></div>
+  </div>
+  <div class="sec sec-g">
+    <div class="sec-h">MAIS VENDIDOS</div>
+    <div class="sec-bar"></div>
+    <div class="pg pg-4">
+      <div class="pc hot">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/Prancheta1_ba4c9c11-1617-4c0c-adbf-9cbcb07ce035.png?v=1769105012&width=400" crossorigin="anonymous">
+          <span class="pc-badge">-13%</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">Scanner 919 DTEA Pro - Diesel + Eletrico Avancado</div>
+          <div class="pc-old">R$ 5.749,00</div>
+          <div class="pc-price">R$ 4.990,00</div>
+          <div class="pc-inst">ou 10x R$ 499,00</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/VALVULA_CAIXA.png?v=1770210370&width=400" crossorigin="anonymous">
+          <span class="pc-badge">-50%</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">TPMS LTR-03 RF - Monitor de Pressao Universal</div>
+          <div class="pc-old">R$ 299,00</div>
+          <div class="pc-price">R$ 149,00</div>
+          <div class="pc-inst">ou 3x R$ 49,67</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/bst_360s.png?v=1764615526&width=400" crossorigin="anonymous">
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">BST-360 - Testador de Bateria e Sistema de Carga</div>
+          <div class="pc-price">R$ 849,00</div>
+          <div class="pc-inst">ou 10x R$ 84,90</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/PROG3_ECON.png?v=1738848849&width=400" crossorigin="anonymous">
+          <span class="pc-badge b">NOVO</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">PROG3 Xprog - Programador de Chaves e Imobilizador</div>
+          <div class="pc-price">R$ 1.290,00</div>
+          <div class="pc-inst">ou 10x R$ 129,00</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+    </div>
+    <div class="sec-more"><a href="#">Ver todos os produtos &#8250;</a></div>
+  </div>
+  <div class="sec sec-dk">
+    <div class="sec-h wh">NOSSAS MARCAS</div>
+    <div class="sec-bar"></div>
+    <div class="brands-row">
+      <div class="br-box"><span class="br-name">LAUNCH</span><span class="br-sub">Diagnostico Profissional</span></div>
+      <div class="br-box"><span class="br-name">SMARTSAFE</span><span class="br-sub">Tecnologia Automotiva</span></div>
+      <div class="br-box"><span class="br-name">AUTEL</span><span class="br-sub">Ferramentas de Diagnostico</span></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-h">O QUE NOSSOS CLIENTES DIZEM</div>
+    <div class="sec-bar"></div>
+    <div class="test-grid">
+      <div class="tc">
+        <div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="tc-q">"</div>
+        <div class="tc-txt">O scanner CRP 123S HD e simplesmente incrivel. Diagnostico completo em minutos, suporte a todos os sistemas do veiculo. Minha oficina mudou de nivel com esse equipamento.</div>
+        <div class="tc-au"><strong>Rafael S.</strong><span>Sao Caetano do Sul, SP</span></div>
+      </div>
+      <div class="tc">
+        <div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="tc-q">"</div>
+        <div class="tc-txt">Atendimento excepcional e produto de altissima qualidade. O TPMS LTR-03 chegou rapido, instalacao simples e funciona perfeitamente. Super recomendo!</div>
+        <div class="tc-au"><strong>Camila A.</strong><span>Sao Paulo, SP</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ft">
+    <div class="ft-grid">
+      <div class="ft-col">
+        <div class="ft-logo">FORTA <span>TECH</span></div>
+        <div class="ft-desc">Especialistas em equipamentos de diagnostico automotivo profissional. Tecnologia de ponta para sua oficina ou revendedora.</div>
+        <div class="ft-soc">
+          <div class="si">W</div><div class="si">In</div><div class="si">Tk</div><div class="si">Fb</div><div class="si">Yt</div><div class="si">Li</div>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h4>Sobre</h4>
+        <a href="#">Quem Somos</a><a href="#">Trabalhe Conosco</a><a href="#">Blog Tecnico</a><a href="#">Parceiros</a>
+      </div>
+      <div class="ft-col">
+        <h4>Links</h4>
+        <a href="#">Scanners</a><a href="#">Diagnosticos</a><a href="#">Undercar</a><a href="#">Minha Conta</a>
+      </div>
+      <div class="ft-col">
+        <h4>Atendimento</h4>
+        <div class="ft-ct">&#128222; 11.3522-6440 / 11.94337-0933</div>
+        <div class="ft-ct">&#9993; pergunte@fortatech.com.br</div>
+        <div class="ft-ct">&#128205; Rodovia Ingo Hering - Gaspar/SC</div>
+        <div class="ft-ct">&#9200; Seg-Sex: 8h-18h</div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <div class="ft-copy">&#169; 2026 Forta Tech - CNPJ: 28.368.061/0001-25</div>
+      <div class="pay-row">
+        <div class="pay-i">VISA</div><div class="pay-i">MC</div><div class="pay-i">ELO</div>
+        <div class="pay-i">AMEX</div><div class="pay-i">PIX</div><div class="pay-i">BOLETO</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /pg-home -->
+
+<!-- CATEGORY PAGE -->
+<div class="page" id="pg-cat">
+  <div class="topbar">
+    <div class="tb-item">&#128179; Parcele em ate 10x sem juros</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item">&#128230; Entrega segura em todo o pais</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item">&#128176; 5% de desconto a vista</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item">&#9889; Tecnologias inovadoras</div>
+  </div>
+  <div class="sh">
+    <div class="sh-logo">FORTA <span>TECH</span></div>
+    <nav class="sh-nav">
+      <a href="#">Inicio</a><a href="#">Scanners</a><a href="#" class="act">Diagnosticos</a>
+      <a href="#">Undercar</a><a href="#">Alinhadoras</a><a href="#">Ar Condicionado</a><a href="#">Balanceadoras</a>
+    </nav>
+    <div class="sh-search"><span>&#128269; Pesquisar...</span></div>
+    <div class="sh-login">Entrar</div>
+    <div class="sh-cart">&#128722; Carrinho <div class="sh-cart-n">0</div></div>
+  </div>
+  <div class="pg-head">
+    <div class="pg-crumb">Inicio &#8250; <b>Diagnosticos</b></div>
+    <div class="pg-hname">Equipamentos de Diagnostico</div>
+    <div class="pg-hsub">Mais de 40 produtos - Scanners, TPMS, Testadores de Bateria e mais</div>
+  </div>
+  <div class="pg-body">
+    <div class="pg-filters">
+      <div class="pf-lbl">Exibindo <b>40 produtos</b></div>
+      <div class="pf-sort">
+        <div class="pf-btn a">Mais Vendidos</div>
+        <div class="pf-btn">Menor Preco</div>
+        <div class="pf-btn">Maior Preco</div>
+        <div class="pf-btn">Lancamentos</div>
+      </div>
+    </div>
+    <div class="pg pg-5">
+      <div class="pc hot">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/202601221410492531generated_image_january_22_2026_-_2_09pm-photoroom_33601de3-7920-4901-bad6-f06da697cc66.png?v=1775650389&width=400" crossorigin="anonymous">
+          <span class="pc-badge">-20%</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">CRP 123S HD - Scanner Diesel Pesado</div>
+          <div class="pc-old">R$ 4.990,00</div>
+          <div class="pc-price">R$ 3.990,00</div>
+          <div class="pc-inst">ou 10x R$ 399,00</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/Prancheta1_ba4c9c11-1617-4c0c-adbf-9cbcb07ce035.png?v=1769105012&width=400" crossorigin="anonymous">
+          <span class="pc-badge">-13%</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">919 DTEA Pro - Diesel + Eletrico</div>
+          <div class="pc-old">R$ 5.749,00</div>
+          <div class="pc-price">R$ 4.990,00</div>
+          <div class="pc-inst">ou 10x R$ 499,00</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/VALVULA_CAIXA.png?v=1770210370&width=400" crossorigin="anonymous">
+          <span class="pc-badge">-50%</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">TPMS LTR-03 RF - Monitor Pressao</div>
+          <div class="pc-old">R$ 299,00</div>
+          <div class="pc-price">R$ 149,00</div>
+          <div class="pc-inst">ou 3x R$ 49,67</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/bst_360s.png?v=1764615526&width=400" crossorigin="anonymous">
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">BST-360 - Testador de Bateria</div>
+          <div class="pc-price">R$ 849,00</div>
+          <div class="pc-inst">ou 10x R$ 84,90</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-img">
+          <img src="https://fortatech.com.br/cdn/shop/files/I-TPMS_CAIXA_1.png?v=1770210370&width=400" crossorigin="anonymous">
+          <span class="pc-badge b">NOVO</span>
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">I-TPMS - Monitor Inteligente</div>
+          <div class="pc-price">R$ 1.490,00</div>
+          <div class="pc-inst">ou 10x R$ 149,00</div>
+          <a href="#" class="pc-btn">Comprar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /pg-cat -->
+
+<!-- PRODUCT PAGE -->
+<div class="page" id="pg-prod">
+  <div class="topbar">
+    <div class="tb-item">&#128179; Parcele em ate 10x sem juros</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item">&#128230; Entrega segura</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item">&#128176; 5% desconto a vista</div>
+    <div class="tb-sep"></div>
+    <div class="tb-item">&#9889; Tecnologias inovadoras</div>
+  </div>
+  <div class="sh">
+    <div class="sh-logo">FORTA <span>TECH</span></div>
+    <nav class="sh-nav">
+      <a href="#">Inicio</a><a href="#">Scanners</a><a href="#" class="act">Diagnosticos</a>
+      <a href="#">Undercar</a><a href="#">Alinhadoras</a><a href="#">Ar Condicionado</a><a href="#">Balanceadoras</a>
+    </nav>
+    <div class="sh-search"><span>&#128269; Pesquisar...</span></div>
+    <div class="sh-login">Entrar</div>
+    <div class="sh-cart">&#128722; Carrinho <div class="sh-cart-n" id="cart-count">0</div></div>
+  </div>
+  <div class="pd-bc">Inicio &#8250; Diagnosticos &#8250; <b>Scanner CRP 123S HD LAUNCH</b></div>
+  <div class="pd-layout">
+    <div class="pd-gallery">
+      <div class="pd-main-img">
+        <img src="https://fortatech.com.br/cdn/shop/files/202601221410492531generated_image_january_22_2026_-_2_09pm-photoroom_33601de3-7920-4901-bad6-f06da697cc66.png?v=1775650389&width=500" crossorigin="anonymous" alt="CRP 123S HD">
+      </div>
+      <div class="pd-thumbs">
+        <div class="pd-thumb a"><img src="https://fortatech.com.br/cdn/shop/files/202601221410492531generated_image_january_22_2026_-_2_09pm-photoroom_33601de3-7920-4901-bad6-f06da697cc66.png?v=1775650389&width=200" crossorigin="anonymous"></div>
+        <div class="pd-thumb"><img src="https://fortatech.com.br/cdn/shop/files/Prancheta1_ba4c9c11-1617-4c0c-adbf-9cbcb07ce035.png?v=1769105012&width=200" crossorigin="anonymous"></div>
+        <div class="pd-thumb"><img src="https://fortatech.com.br/cdn/shop/files/bst_360s.png?v=1764615526&width=200" crossorigin="anonymous"></div>
+      </div>
+    </div>
+    <div class="pd-info">
+      <div class="pd-brand-lbl">LAUNCH</div>
+      <div class="pd-title">Scanner CRP 123S HD<br>Diagnostico Diesel Pesado</div>
+      <div class="pd-rating">
+        <span class="pd-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <span class="pd-rev">4.9 (248 avaliacoes)</span>
+      </div>
+      <div class="price-box">
+        <div class="pb-old">De: R$ 4.990,00</div>
+        <div class="pb-main">R$ 3.990,00</div>
+        <div class="pb-inst">ou 10x de R$ 399,00 sem juros</div>
+        <div class="pb-pix">&#128154; R$ 3.790,50 no Pix (5% off)</div>
+      </div>
+      <div class="pd-feats">
+        <h3>Principais Recursos</h3>
+        <div class="pf-row"><span class="pf-ck">&#10004;</span> Compativel com 280+ marcas de veiculos pesados</div>
+        <div class="pf-row"><span class="pf-ck">&#10004;</span> Cobertura completa: motor, cambio, ABS, airbag, TPMS</div>
+        <div class="pf-row"><span class="pf-ck">&#10004;</span> Tela touchscreen HD de 8" - leitura clara ao sol</div>
+        <div class="pf-row"><span class="pf-ck">&#10004;</span> Atualizacoes online gratuitas por 2 anos via Wi-Fi</div>
+        <div class="pf-row"><span class="pf-ck">&#10004;</span> Codificacao de injetores, DPF, AdBlue, SCR</div>
+      </div>
+      <div id="add-btn">&#128722; Adicionar ao Carrinho</div>
+      <div class="buy-now">&#9889; Comprar Agora</div>
+      <div class="pd-secure">&#128274; Compra 100% segura - SSL - PCI-DSS</div>
+    </div>
+  </div>
+</div><!-- /pg-prod -->
+</div><!-- /vp -->
+
+<!-- CART -->
+<div id="cart-ov">
+  <div id="cart-panel">
+    <div id="cp-hd">
+      <h2>&#128722; Seu Carrinho (1)</h2>
+      <span class="cp-x">&#10005;</span>
+    </div>
+    <div id="cp-body">
+      <div class="ci">
+        <div class="ci-img"><img src="https://fortatech.com.br/cdn/shop/files/202601221410492531generated_image_january_22_2026_-_2_09pm-photoroom_33601de3-7920-4901-bad6-f06da697cc66.png?v=1775650389&width=200" crossorigin="anonymous"></div>
+        <div class="ci-info">
+          <div class="ci-name">Scanner CRP 123S HD - LAUNCH Diesel Pesado</div>
+          <div class="ci-sku">SKU: CRP-123S-HD</div>
+          <div class="ci-qty">Qtd: 1</div>
+          <div class="ci-price">R$ 3.990,00</div>
+        </div>
+      </div>
+    </div>
+    <div id="cp-sum">
+      <div class="cs-r"><span>Subtotal</span><span>R$ 3.990,00</span></div>
+      <div class="cs-r"><span>Frete</span><span class="cs-free">GRATIS</span></div>
+      <div class="cs-r"><span>Desconto Pix</span><span style="color:#2e7d32">-R$ 199,50</span></div>
+      <div class="cs-r t"><span>Total</span><span class="v">R$ 3.790,50</span></div>
+    </div>
+    <div id="cp-pay">
+      <div class="cp-plbl">Formas de pagamento</div>
+      <div class="pay-row">
+        <div class="pay-i">VISA</div><div class="pay-i">MC</div><div class="pay-i">ELO</div><div class="pay-i">PIX</div><div class="pay-i">BOLETO</div>
+      </div>
+    </div>
+    <div id="cp-ft">
+      <div id="checkout-btn">Finalizar Compra &#8594;</div>
+      <div class="cp-sec">&#128274; Pagamento 100% seguro e criptografado</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div id="conf-ov">
+  <div id="conf-card">
+    <div class="cc-hd">
+      <div class="cc-ok">&#10003;</div>
+      <h2>Pedido Confirmado!</h2>
+      <p>Obrigado pela sua compra, Rafael!</p>
+    </div>
+    <div class="cc-body">
+      <div class="cc-r"><span class="ck">Pedido</span><span class="v">#FT-2026-18742</span></div>
+      <div class="cc-r"><span class="ck">Produto</span><span class="v">CRP 123S HD</span></div>
+      <div class="cc-r"><span class="ck">Total pago</span><span class="v" style="color:#e31e24">R$ 3.790,50</span></div>
+      <div class="cc-r"><span class="ck">Previsao de entrega</span><span class="v">3-5 dias uteis</span></div>
+      <div class="cc-r"><span class="ck">E-mail confirmado</span><span class="v">rafael@email.com</span></div>
+    </div>
+    <div class="cc-foot">Voce recebera atualizacoes de envio por e-mail e WhatsApp.</div>
+  </div>
+</div>
+
+<canvas id="intro-canvas" width="1920" height="1080"></canvas>
+<div id="flash"></div>
+<div id="vignette"></div>
+<div id="scanlines"></div>
+<svg id="cursor" width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg">
+  <filter id="cs" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.5)"/>
+  </filter>
+  <polygon points="0,0 0,22 6,17 10,27 13,26 9,16 16,16" fill="white" filter="url(#cs)"/>
+  <polygon points="0,0 0,22 6,17 10,27 13,26 9,16 16,16" fill="none" stroke="#222" stroke-width="1.2"/>
+</svg>
+<div id="ripple"></div>
+<div id="hud"><div id="hud-bg"></div><div id="hud-fill"></div></div>
+<div id="frm">f0</div><script>
+window.hyperframe = { fps: 30, durationInFrames: 900, width: 1920, height: 1080 };
+
+const IMG_URLS = [
+  'https://fortatech.com.br/cdn/shop/files/202601221410492531generated_image_january_22_2026_-_2_09pm-photoroom_33601de3-7920-4901-bad6-f06da697cc66.png?v=1775650389&width=500',
+  'https://fortatech.com.br/cdn/shop/files/Prancheta1_ba4c9c11-1617-4c0c-adbf-9cbcb07ce035.png?v=1769105012&width=400',
+  'https://fortatech.com.br/cdn/shop/files/VALVULA_CAIXA.png?v=1770210370&width=400',
+  'https://fortatech.com.br/cdn/shop/files/bst_360s.png?v=1764615526&width=400',
+  'https://fortatech.com.br/cdn/shop/files/PROG3_ECON.png?v=1738848849&width=400',
+  'https://fortatech.com.br/cdn/shop/files/I-TPMS_CAIXA_1.png?v=1770210370&width=400'
+];
+window.hyperframeReady = Promise.all(IMG_URLS.map(src => {
+  const img = new Image(); img.crossOrigin = 'anonymous'; img.src = src;
+  return img.decode().catch(() => {});
+}));
+
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const lerp  = (a,b,t) => a + (b-a)*t;
+const prog  = (t,s,e) => clamp((t-s)/(e-s), 0, 1);
+const easeOut = t => 1 - (1-t)*(1-t);
+const easeIn  = t => t*t;
+const ease    = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
+const easeEl  = t => t===0?0:t===1?1: Math.pow(2,-10*t)*Math.sin((t*10-0.75)*(2*Math.PI)/3)+1;
+
+// Cursor keyframes [time_sec, x, y]
+const KF = [
+  [3.0,  960, 540],
+  [3.6,  960,  95],
+  [5.5,  960,  95],
+  [6.2,  720, 500],
+  [7.5,  820, 620],
+  [8.8,  700, 780],
+  [9.5,  560, 850],
+  [10.5, 560, 850],
+  [11.5, 350, 380],
+  [12.5, 265, 560],
+  [13.5, 265, 615],
+  [14.5, 265, 615],
+  [15.5, 800, 520],
+  [16.5, 925, 650],
+  [17.5, 925, 790],
+  [18.5, 925, 810],
+  [19.5, 925, 810],
+  [20.5, 1600, 820],
+  [21.5, 1600, 870],
+  [22.5, 1600, 870],
+  [23.0, 960, 540]
+];
+
+function cursorAt(t) {
+  if (t <= KF[0][0]) return { x: KF[0][1], y: KF[0][2] };
+  const last = KF[KF.length-1];
+  if (t >= last[0]) return { x: last[1], y: last[2] };
+  let i = 0;
+  while (i < KF.length-1 && KF[i+1][0] <= t) i++;
+  const k0 = KF[i], k1 = KF[i+1];
+  const u = ease((t - k0[0]) / (k1[0] - k0[0]));
+  const p0 = KF[Math.max(0, i-1)];
+  const p3 = KF[Math.min(KF.length-1, i+2)];
+  const u2 = u*u, u3 = u2*u;
+  const cx = 0.5*((2*k0[1]) + (-p0[1]+k1[1])*u + (2*p0[1]-5*k0[1]+4*k1[1]-p3[1])*u2 + (-p0[1]+3*k0[1]-3*k1[1]+p3[1])*u3);
+  const cy = 0.5*((2*k0[2]) + (-p0[2]+k1[2])*u + (2*p0[2]-5*k0[2]+4*k1[2]-p3[2])*u2 + (-p0[2]+3*k0[2]-3*k1[2]+p3[2])*u3);
+  return { x: cx, y: cy };
+}
+
+const CLICKS = [
+  [3.7,  960,  95],
+  [10.6, 560, 850],
+  [13.8, 265, 615],
+  [18.7, 925, 810],
+  [21.6, 1600, 870]
+];
+
+const vp        = document.getElementById('vp');
+const chrome    = document.getElementById('chrome');
+const urlTxt    = document.getElementById('urlTxt');
+const pgHome    = document.getElementById('pg-home');
+const pgCat     = document.getElementById('pg-cat');
+const pgProd    = document.getElementById('pg-prod');
+const cartOv    = document.getElementById('cart-ov');
+const cartPanel = document.getElementById('cart-panel');
+const confOv    = document.getElementById('conf-ov');
+const confCard  = document.getElementById('conf-card');
+const cursor    = document.getElementById('cursor');
+const ripple    = document.getElementById('ripple');
+const flash     = document.getElementById('flash');
+const hudFill   = document.getElementById('hud-fill');
+const frmLbl    = document.getElementById('frm');
+const introC    = document.getElementById('intro-canvas');
+const IX        = introC.getContext('2d');
+
+const URL_HOME  = 'https://fortatech.com.br';
+const URL_CAT   = 'https://fortatech.com.br/collections/diagnosticos';
+const URL_PROD  = 'https://fortatech.com.br/products/scanner-crp-123s-hd-launch';
+const URL_CART  = 'https://fortatech.com.br/cart';
+const URL_CONF  = 'https://fortatech.com.br/checkout/confirmation';
+const FPS = 30;
+
+function showPage(id) {
+  pgHome.style.display = 'none';
+  pgCat.style.display  = 'none';
+  pgProd.style.display = 'none';
+  document.getElementById(id).style.display = 'block';
+}
+
+function scrollPage(id, y) {
+  document.getElementById(id).style.top = (-y) + 'px';
+}
+
+function setUrl(url, p) {
+  const n = Math.round(p * url.length);
+  urlTxt.textContent = url.substring(0, n);
+}
+
+function drawIntro(n) {
+  const t = n / FPS;
+  IX.clearRect(0, 0, 1920, 1080);
+  IX.fillStyle = '#000';
+  IX.fillRect(0, 0, 1920, 1080);
+
+  const fade = easeOut(clamp(t / 0.5, 0, 1));
+
+  // Red accent bar
+  if (t > 0.3) {
+    const lp = easeOut(clamp((t-0.3)/0.5, 0, 1));
+    IX.globalAlpha = fade;
+    IX.strokeStyle = '#e31e24';
+    IX.lineWidth = 3;
+    IX.beginPath();
+    IX.moveTo(960 - 210*lp, 575);
+    IX.lineTo(960 + 210*lp, 575);
+    IX.stroke();
+  }
+
+  // Logo
+  if (t > 0.1) {
+    const lp = easeOut(clamp((t-0.1)/0.6, 0, 1));
+    IX.globalAlpha = fade * lp;
+    IX.font = 'bold 118px Segoe UI, Arial Black, sans-serif';
+    IX.textAlign = 'center';
+    IX.textBaseline = 'middle';
+    IX.fillStyle = '#ffffff';
+    IX.fillText('FORTA', 810, 548);
+    IX.fillStyle = '#e31e24';
+    IX.fillText('TECH', 1120, 548);
+  }
+
+  // Tagline
+  if (t > 0.7) {
+    const lp = easeOut(clamp((t-0.7)/0.5, 0, 1));
+    IX.globalAlpha = fade * lp * 0.75;
+    IX.font = '26px Segoe UI, Arial, sans-serif';
+    IX.fillStyle = '#aaa';
+    IX.fillText('TECNOLOGIAS INOVADORAS E IMBATIVEIS', 960, 630);
+  }
+
+  // Progress line
+  if (t > 1.0) {
+    const bp = clamp((t-1.0)/1.5, 0, 1);
+    IX.globalAlpha = 0.5;
+    IX.fillStyle = '#e31e24';
+    IX.fillRect(760, 690, 400 * bp, 2);
+  }
+
+  IX.globalAlpha = 1;
+}
+
+function drawOutro(t) {
+  const age = t - 28;
+  IX.clearRect(0, 0, 1920, 1080);
+  IX.fillStyle = '#000';
+  IX.fillRect(0, 0, 1920, 1080);
+
+  const fade = easeOut(clamp(age / 0.5, 0, 1));
+  IX.globalAlpha = fade;
+
+  // Red bar
+  IX.fillStyle = '#e31e24';
+  IX.fillRect(760, 576, 400, 3);
+
+  // Logo
+  IX.font = 'bold 118px Segoe UI, Arial Black, sans-serif';
+  IX.textAlign = 'center';
+  IX.textBaseline = 'middle';
+  IX.fillStyle = '#ffffff';
+  IX.fillText('FORTA', 810, 548);
+  IX.fillStyle = '#e31e24';
+  IX.fillText('TECH', 1120, 548);
+
+  // Tagline
+  const t2 = easeOut(clamp((age-0.3)/0.5, 0, 1));
+  IX.globalAlpha = fade * t2 * 0.75;
+  IX.font = '26px Segoe UI, Arial, sans-serif';
+  IX.fillStyle = '#aaa';
+  IX.fillText('TECNOLOGIAS INOVADORAS E IMBATIVEIS', 960, 630);
+
+  // Site URL
+  const t3 = easeOut(clamp((age-0.6)/0.5, 0, 1));
+  IX.globalAlpha = fade * t3;
+  IX.font = 'bold 20px Segoe UI, Arial, sans-serif';
+  IX.fillStyle = '#e31e24';
+  IX.fillText('fortatech.com.br', 960, 690);
+
+  IX.globalAlpha = 1;
+}
+
+window.setFrame = function(n) {
+  const t = n / FPS;
+
+  hudFill.style.width = (n / 900 * 100) + '%';
+  frmLbl.textContent = 'f' + n;
+
+  // ── SCENE 0: Intro (0-3s) ──────────────────────────────────────────
+  if (t < 3) {
+    introC.style.opacity = '1';
+    chrome.style.opacity = '0';
+    cursor.style.opacity = '0';
+    cartOv.style.display = 'none';
+    confOv.style.display = 'none';
+    flash.style.opacity  = '0';
+    showPage('pg-home');
+    scrollPage('pg-home', 0);
+    drawIntro(n);
+    return;
+  }
+
+  // Fade out intro canvas
+  introC.style.opacity = String(Math.max(0, 1 - prog(t, 3.0, 3.4)));
+
+  // ── SCENE 1: Browser chrome + URL home (3-6s) ──────────────────────
+  chrome.style.opacity = String(easeOut(prog(t, 3.0, 3.6)));
+
+  if (t >= 3.0 && t < 11.0) {
+    showPage('pg-home');
+    const up = prog(t, 3.2, 5.0);
+    setUrl(URL_HOME, Math.min(up, 1));
+  }
+
+  // ── SCENE 2: Homepage scroll (6-11s) ──────────────────────────────
+  if (t >= 6.0 && t < 11.0) {
+    const sp = ease(prog(t, 6.0, 10.6));
+    scrollPage('pg-home', sp * 950);
+  } else if (t >= 3.0 && t < 6.0) {
+    scrollPage('pg-home', 0);
+  }
+
+  // ── SCENE 3: Category page (11-15s) ───────────────────────────────
+  if (t >= 11.0 && t < 15.0) {
+    showPage('pg-cat');
+    if (t >= 11.0 && t < 11.12) {
+      flash.style.opacity = String(1 - prog(t, 11.0, 11.12));
+    } else {
+      flash.style.opacity = '0';
+    }
+    const up = prog(t, 11.0, 12.6);
+    setUrl(URL_CAT, Math.min(up, 1));
+    const sp = ease(prog(t, 12.2, 14.8)) * 280;
+    scrollPage('pg-cat', sp);
+    cartOv.style.display = 'none';
+    confOv.style.display = 'none';
+  }
+
+  // ── SCENE 4: Product page (15-20s) ────────────────────────────────
+  if (t >= 15.0 && t < 20.0) {
+    showPage('pg-prod');
+    if (t >= 15.0 && t < 15.12) {
+      flash.style.opacity = String(1 - prog(t, 15.0, 15.12));
+    } else {
+      flash.style.opacity = '0';
+    }
+    const up = prog(t, 15.0, 16.6);
+    setUrl(URL_PROD, Math.min(up, 1));
+    const sp = ease(prog(t, 16.2, 19.2)) * 180;
+    scrollPage('pg-prod', sp);
+    cartOv.style.display = 'none';
+    confOv.style.display = 'none';
+  }
+
+  // ── SCENE 5: Cart (20-22.5s) ──────────────────────────────────────
+  if (t >= 20.0 && t < 22.5) {
+    showPage('pg-prod');
+    flash.style.opacity = '0';
+    cartOv.style.display = 'flex';
+    const cp = easeEl(clamp(prog(t, 20.0, 20.8), 0, 1));
+    cartPanel.style.transform = 'translateX(' + ((1-cp)*560) + 'px)';
+    const dim = easeOut(prog(t, 20.0, 20.6));
+    cartOv.style.background = 'rgba(0,0,0,' + (dim*0.5) + ')';
+    if (t > 20.8) setUrl(URL_CART, 1); else setUrl(URL_CART, prog(t, 20.8, 21.5));
+    confOv.style.display = 'none';
+  }
+
+  // ── SCENE 6: Confirmation (22.5-28s) ──────────────────────────────
+  if (t >= 22.5 && t < 28.0) {
+    showPage('pg-prod');
+    flash.style.opacity = '0';
+    cartOv.style.display = 'none';
+    confOv.style.display = 'flex';
+    const cp = easeEl(clamp(prog(t, 22.5, 23.4), 0, 1));
+    const bg = easeOut(prog(t, 22.5, 23.2));
+    confOv.style.background = 'rgba(0,0,0,' + (bg*0.72) + ')';
+    confCard.style.transform = 'scale(' + (0.85 + 0.15*cp) + ')';
+    confCard.style.opacity = String(cp);
+    confOv.style.opacity = t >= 27.5 ? String(1 - prog(t, 27.5, 28.0)) : '1';
+    setUrl(URL_CONF, 1);
+  } else if (t >= 20.0 && t < 22.5) {
+    // handled above
+  } else if (t < 20.0) {
+    confOv.style.display = 'none';
+  }
+
+  // ── SCENE 7: Outro (28-30s) ───────────────────────────────────────
+  if (t >= 28.0) {
+    cartOv.style.display = 'none';
+    confOv.style.display = 'none';
+    showPage('pg-home');
+    scrollPage('pg-home', 0);
+    flash.style.opacity = '0';
+    chrome.style.opacity = String(1 - easeIn(prog(t, 28.0, 29.0)));
+    cursor.style.opacity = '0';
+    introC.style.opacity = String(easeOut(prog(t, 28.0, 28.5)));
+    drawOutro(t);
+    return;
+  }
+
+  // ── CURSOR ────────────────────────────────────────────────────────
+  if (t >= 3.0 && t < 28.0) {
+    cursor.style.opacity = String(easeOut(prog(t, 3.0, 3.5)));
+    const pos = cursorAt(t);
+    cursor.style.transform = 'translate(' + pos.x + 'px,' + pos.y + 'px)';
+  }
+
+  // ── RIPPLE (click feedback) ───────────────────────────────────────
+  let hit = null;
+  for (const [ct, cx, cy] of CLICKS) {
+    if (t >= ct && t < ct + 0.5) { hit = { ct, cx, cy, age: t-ct }; break; }
+  }
+  if (hit) {
+    const rp = hit.age / 0.5;
+    ripple.style.left   = hit.cx + 'px';
+    ripple.style.top    = hit.cy + 'px';
+    ripple.style.transform = 'scale(' + (1 + rp*3.5) + ')';
+    ripple.style.opacity   = String((1-rp)*0.75);
+  } else {
+    ripple.style.opacity = '0';
+  }
+};
+
+window.setFrame(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lower Third Template</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px; height: 1080px; overflow: hidden;
+      background: transparent;
+    }
+    #lower-third {
+      position: absolute;
+      bottom: 120px; left: 0;
+      display: flex; flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+    }
+    #accent-line {
+      height: 4px;
+      background: var(--color, #7c6af7);
+      width: 0;
+      margin-bottom: 10px;
+    }
+    #name {
+      font: 700 52px/1.1 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      background: rgba(0,0,0,0.75);
+      padding: 14px 28px 10px 60px;
+      transform: translateX(-100%);
+      white-space: nowrap;
+    }
+    #title-text {
+      font: 400 30px/1 'Segoe UI', system-ui, sans-serif;
+      color: var(--color, #7c6af7);
+      background: rgba(0,0,0,0.65);
+      padding: 8px 28px 12px 60px;
+      transform: translateX(-100%);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="lower-third">
+    <div id="accent-line"></div>
+    <div id="name" id="name">John Doe</div>
+    <div id="title-text">Senior Engineer · FortaTech</div>
+  </div>
+
+  <script>
+    // ─── Props from hyperframe.json or URL ────────────────────────────────────
+    const defaults = { name: 'John Doe', title: 'Senior Engineer · FortaTech', color: '#7c6af7' };
+    let props = defaults;
+    try {
+      const hfData = window._hyperframeProps || {};
+      props = { ...defaults, ...hfData };
+    } catch (_) {}
+
+    document.getElementById('name').textContent = props.name;
+    document.getElementById('title-text').textContent = props.title;
+    document.documentElement.style.setProperty('--color', props.color);
+
+    // ─── HyperFrame contract ──────────────────────────────────────────────────
+    window.hyperframe = {
+      fps: 30,
+      durationInFrames: 150,  // 5 seconds
+      width: 1920, height: 1080,
+    };
+
+    const FPS = 30;
+    const ENTER_FRAMES  = 20; // slide-in duration
+    const HOLD_FRAMES   = 90;
+    const EXIT_FRAMES   = 20;
+    const LINE_FRAMES   = 15;
+
+    const name     = document.getElementById('name');
+    const titleEl  = document.getElementById('title-text');
+    const line     = document.getElementById('accent-line');
+
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+    window.setFrame = function(f) {
+      // Accent line grows during LINE_FRAMES
+      const lineProgress = Math.min(f / LINE_FRAMES, 1);
+      line.style.width = (easeOut(lineProgress) * 600) + 'px';
+
+      // Name slides in during ENTER_FRAMES (starts at frame LINE_FRAMES/2)
+      const nameStart = Math.floor(LINE_FRAMES / 2);
+      const nameT = Math.min(Math.max((f - nameStart) / ENTER_FRAMES, 0), 1);
+      name.style.transform = `translateX(${(1 - easeOut(nameT)) * -110}%)`;
+
+      // Title slides in 8 frames after name
+      const titleStart = nameStart + 8;
+      const titleT = Math.min(Math.max((f - titleStart) / ENTER_FRAMES, 0), 1);
+      titleEl.style.transform = `translateX(${(1 - easeOut(titleT)) * -110}%)`;
+
+      // Exit
+      const exitStart = nameStart + ENTER_FRAMES + HOLD_FRAMES;
+      if (f >= exitStart) {
+        const exitT = Math.min((f - exitStart) / EXIT_FRAMES, 1);
+        name.style.transform     = `translateX(${-110 * easeOut(exitT)}%)`;
+        titleEl.style.transform  = `translateX(${-110 * easeOut(exitT)}%)`;
+        line.style.width = (easeOut(1 - exitT) * 600) + 'px';
+      }
+    };
+
+    window.setFrame(0);
+  </script>
+</body>
+</html>

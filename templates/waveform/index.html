@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Waveform Template</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px; height: 1080px; overflow: hidden;
+      background: linear-gradient(180deg, #0d0d1a 0%, #1a1a2e 100%);
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 40px;
+    }
+    canvas { display: block; }
+    #track-title {
+      font: 700 40px/1 'Segoe UI', system-ui, sans-serif;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div id="track-title">Track Title</div>
+  <canvas id="waveform" width="1600" height="400"></canvas>
+
+  <script>
+    // NOTE: This template visualizes a pre-computed waveform (array of amplitudes 0–1).
+    // The audio file itself is mixed by FFmpeg, not played in the browser.
+    // Generate waveformData by running: hyperframe waveform-data <audio.mp3> --fps 30
+
+    const defaults = {
+      title: 'Track Title',
+      color: '#7c6af7',
+      barCount: 80,
+      waveformData: null, // array of amplitudes per frame, or null for demo sine wave
+    };
+    let props = defaults;
+    try { props = { ...defaults, ...(window._hyperframeProps || {}) }; } catch (_) {}
+
+    document.getElementById('track-title').textContent = props.title;
+
+    const FPS   = 30;
+    const TOTAL = props.waveformData ? props.waveformData.length : 150;
+
+    window.hyperframe = { fps: FPS, durationInFrames: TOTAL, width: 1920, height: 1080 };
+
+    const canvas = document.getElementById('waveform');
+    const ctx    = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const bars = props.barCount;
+
+    function drawWaveform(amplitudes) {
+      ctx.clearRect(0, 0, W, H);
+      const barW = W / bars;
+      const gap  = barW * 0.25;
+      const maxH = H * 0.9;
+
+      for (let i = 0; i < bars; i++) {
+        const amp = amplitudes[i] ?? 0;
+        const bh  = Math.max(4, amp * maxH);
+        const x   = i * barW + gap / 2;
+        const y   = (H - bh) / 2;
+
+        const grad = ctx.createLinearGradient(0, y, 0, y + bh);
+        grad.addColorStop(0, props.color);
+        grad.addColorStop(1, props.color + '55');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barW - gap, bh, 3);
+        ctx.fill();
+      }
+    }
+
+    window.setFrame = function(frame) {
+      let amplitudes;
+      if (props.waveformData && props.waveformData[frame]) {
+        amplitudes = props.waveformData[frame];
+      } else {
+        // Demo: animated sine wave
+        amplitudes = Array.from({ length: bars }, (_, i) => {
+          const phase = (frame / FPS) * Math.PI * 2;
+          const x     = i / bars;
+          return 0.3 + 0.5 * Math.abs(Math.sin(phase + x * Math.PI * 4));
+        });
+      }
+      drawWaveform(amplitudes);
+    };
+
+    window.setFrame(0);
+  </script>
+</body>
+</html>

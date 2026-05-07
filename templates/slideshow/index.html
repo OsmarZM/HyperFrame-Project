@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slideshow Template</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1920px; height: 1080px; overflow: hidden; background: #111; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: none;
+    }
+    .slide img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .slide .caption {
+      position: absolute; bottom: 60px; left: 0; right: 0;
+      text-align: center;
+      font: 700 48px/1.2 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+      padding: 0 80px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slides"></div>
+
+  <script>
+    // ─── Default slides (replace with your images) ────────────────────────────
+    const defaultSlides = [
+      { src: 'slide1.jpg', caption: 'Slide One' },
+      { src: 'slide2.jpg', caption: 'Slide Two' },
+      { src: 'slide3.jpg', caption: 'Slide Three' },
+    ];
+
+    let slides = defaultSlides;
+    try { slides = (window._hyperframeProps?.slides) || defaultSlides; } catch (_) {}
+
+    const FPS            = 30;
+    const HOLD_FRAMES    = 60;  // 2s per slide
+    const FADE_FRAMES    = 15;  // 0.5s crossfade
+    const SLIDE_TOTAL    = HOLD_FRAMES + FADE_FRAMES;
+    const totalFrames    = slides.length * SLIDE_TOTAL;
+
+    window.hyperframe = { fps: FPS, durationInFrames: totalFrames, width: 1920, height: 1080 };
+
+    // Build DOM
+    const container = document.getElementById('slides');
+    const els = slides.map((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'slide';
+      div.innerHTML = `<img src="${s.src}" alt="slide ${i}"><div class="caption">${s.caption}</div>`;
+      container.appendChild(div);
+      return div;
+    });
+
+    function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    window.setFrame = function(frame) {
+      const slideIndex = Math.floor(frame / SLIDE_TOTAL);
+      const frameInSlide = frame % SLIDE_TOTAL;
+
+      els.forEach((el, i) => {
+        if (i === slideIndex) {
+          // Hold phase
+          if (frameInSlide < HOLD_FRAMES) {
+            el.style.opacity = '1';
+          } else {
+            // Fade out
+            const t = (frameInSlide - HOLD_FRAMES) / FADE_FRAMES;
+            el.style.opacity = String(1 - easeInOut(t));
+          }
+        } else if (i === slideIndex + 1 && frameInSlide >= HOLD_FRAMES) {
+          // Next slide fading in
+          const t = (frameInSlide - HOLD_FRAMES) / FADE_FRAMES;
+          el.style.opacity = String(easeInOut(t));
+        } else if (i < slideIndex) {
+          el.style.opacity = '0';
+        } else {
+          el.style.opacity = '0';
+        }
+      });
+
+      // Last slide stays
+      if (slideIndex >= slides.length) {
+        els.forEach((el, i) => { el.style.opacity = i === slides.length - 1 ? '1' : '0'; });
+      }
+    };
+
+    window.setFrame(0);
+  </script>
+</body>
+</html>
